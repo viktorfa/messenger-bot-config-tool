@@ -13,8 +13,9 @@ import {composeWithDevTools} from 'redux-devtools-extension'
 import thunk from 'redux-thunk';
 import mainReducer from './reducers/mainReducer';
 import persistentMenuReducer from './reducers/persistentMenuReducer';
+import getStartedReducer from './reducers/getStartedReducer';
 
 export default createStore(
-  combineReducers({mainReducer, persistentMenuReducer}),
+  combineReducers({mainReducer, persistentMenuReducer, getStartedReducer}),
   composeWithDevTools(applyMiddleware(thunk))
 )

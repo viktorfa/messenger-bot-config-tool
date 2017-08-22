@@ -9,8 +9,8 @@
  */
 
 import React from 'react';
-import fetch from 'isomorphic-fetch';
 import PersistentMenuContainer from '../PersistentMenu/PersistentMenuContainer';
+import GetStartedContainer from '../GetStarted/GetStartedContainer';
 
 class MainComponent extends React.Component {
   constructor(props) {
@@ -18,28 +18,21 @@ class MainComponent extends React.Component {
     this.state = {};
   }
 
-
-
   sendPersistentMenuRequest(event) {
     event.preventDefault();
     const accessToken = this.props.main.accessToken;
     const requestBody = this.props.persistentMenu.persistentMenu.createBodyForRequest();
     this.props.sendPersistentMenuRequest(accessToken, requestBody);
-    /*
-    fetch(`https://graph.facebook.com/v2.6/me/messenger_profile?access_token=${accessToken}`, {
-      method: 'POST',
-      body: JSON.stringify(requestBody),
-      headers: {'Content-Type': 'application/json'}
-    }).then(response => {
-      if (response.ok) {
-        return response.json();
-      }
-    }).then(response => {
-      console.log(response);
-    }).catch(error => {
-      console.log(error);
-    });
-    */
+  }
+
+  sendGetStartedButtonRequest(event) {
+    event.preventDefault();
+    const accessToken = this.props.main.accessToken;
+    const requestBody = this.props.getStartedButton.getStartedButton.createBodyForRequest();
+    console.log("REQUEST BODY");
+    console.log(requestBody);
+    console.log(JSON.stringify(requestBody));
+    this.props.sendGetStartedButtonRequest(accessToken, requestBody);
   }
 
   accessTokenChange(event) {
@@ -68,8 +61,12 @@ class MainComponent extends React.Component {
           <button onClick={event => this.sendPersistentMenuRequest(event)}>
             Send persistent menu request
           </button>
+          <button onClick={event => this.sendGetStartedButtonRequest(event)}>
+            Send get started button request
+          </button>
         </div>
-        <PersistentMenuContainer persistentMenu={this.props.persistentMenu}/>
+        <GetStartedContainer/>
+        <PersistentMenuContainer/>
       </div>
     )
   }

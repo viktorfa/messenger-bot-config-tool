@@ -40,10 +40,33 @@ const sendPersistentMenuRequest = (accessToken, body) => {
   }
 };
 
+const sendGetStartedButtonRequest = (accessToken, body) => {
+  return (dispatch) => {
+    fetch(`https://graph.facebook.com/v2.6/me/messenger_profile?access_token=${accessToken}`, {
+      method: 'POST',
+      body: JSON.stringify(body),
+      headers: {'Content-Type': 'application/json'}
+    }).then(response => {
+      if (response.ok) {
+        return response.json();
+      }
+      throw "Something wrong with the request";
+    }).then(response => {
+      console.log(response);
+      return dispatch({type: 'PERSISTENT_MENU_REQUEST_FINISH', message: 'Get started button updated successfully'})
+    }).catch(error => {
+      console.log(error);
+      return dispatch({type: 'PERSISTENT_MENU_REQUEST_FINISH', message: 'Something went wrong'});
+    });
+    return dispatch({type: 'START_SEND_PERSISTENT_MENU_REQUEST'});
+  }
+};
+
 const mapStateToProps = (state) => {
   return {
     main: state.mainReducer,
-    persistentMenu: state.persistentMenuReducer
+    persistentMenu: state.persistentMenuReducer,
+    getStartedButton: state.getStartedReducer,
   };
 };
 
@@ -51,6 +74,7 @@ const mapDispatchToProps = (dispatch) => {
   return {
     setAccessToken: (accessToken) => dispatch(setAccessToken(accessToken)),
     sendPersistentMenuRequest: (accessToken, body) => dispatch(sendPersistentMenuRequest(accessToken, body)),
+    sendGetStartedButtonRequest: (accessToken, body) => dispatch(sendGetStartedButtonRequest(accessToken, body)),
   };
 };
 
