@@ -8,12 +8,13 @@
  * LICENSE.txt file in the root directory of this source tree.
  */
 
-import {createStore, combineReducers} from 'redux';
+import {createStore, combineReducers, applyMiddleware} from 'redux';
 import {composeWithDevTools} from 'redux-devtools-extension'
+import thunk from 'redux-thunk';
 import mainReducer from './reducers/mainReducer';
 import persistentMenuReducer from './reducers/persistentMenuReducer';
 
 export default createStore(
   combineReducers({mainReducer, persistentMenuReducer}),
-  composeWithDevTools()
+  composeWithDevTools(applyMiddleware(thunk))
 )

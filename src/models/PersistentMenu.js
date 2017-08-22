@@ -18,10 +18,15 @@ class PersistentMenu {
   }
 
   createBodyForRequest() {
-    const result = {
+
+    const menu = {
       locale: this.locale,
       composer_input_disabled: this.composer_input_disabled,
       call_to_actions: this.menuItems['root'].getCallToActionsForRequest()
+    };
+
+    const result = {
+       persistent_menu: [menu]
     };
 
     return result;

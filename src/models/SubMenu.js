@@ -31,13 +31,14 @@ class SubMenu extends CallToAction {
           return {
             type: menuItem.type,
             title: menuItem.title,
-            url: menuItem.url
+            url: menuItem.url,
+            webview_height_ratio: menuItem.webview_height_ratio
           };
         case 'postback':
           return {
             type: menuItem.type,
             title: menuItem.title,
-            postback: menuItem.postback
+            payload: menuItem.payload
           };
         case 'nested':
           return {

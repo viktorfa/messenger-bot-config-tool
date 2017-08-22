@@ -4,6 +4,7 @@ class WebUrlButton extends CallToAction {
   constructor(title, url, parent, id) {
     super('web_url', title, parent, id);
     this.url = url;
+    this.webview_height_ratio = 'full';
   }
 
   setUrl(url) {
