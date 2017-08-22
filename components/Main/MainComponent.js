@@ -31,7 +31,6 @@ class MainComponent extends React.Component {
     const accessToken = this.props.main.accessToken;
     const requestBody = this.props.getStartedButton.getStartedButton.createBodyForRequest();
     this.props.sendFacebookPostRequest(accessToken, requestBody, 'Get started button successfully updated');
-    this.props.sendGetStartedButtonRequest(accessToken, requestBody);
   }
 
   sendGreetingTextRequest(event) {
@@ -39,7 +38,6 @@ class MainComponent extends React.Component {
     const accessToken = this.props.main.accessToken;
     const requestBody = this.props.greetingText.greetingText.createBodyForRequest();
     this.props.sendFacebookPostRequest(accessToken, requestBody, 'Greeting text successfully updated');
-    this.props.sendGetStartedButtonRequest(accessToken, requestBody);
   }
 
   accessTokenChange(event) {
