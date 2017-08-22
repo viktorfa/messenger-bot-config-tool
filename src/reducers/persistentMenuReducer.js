@@ -41,7 +41,7 @@ const initialState = {
   }
 };
 
-const getInitialState = () => {
+export const getInitialPersistentMenu = () => {
   const initialPersistentMenu = new PersistentMenu();
   const initialSubMenu = new SubMenu('My Account', 1, 'root');
   const initialMenuItems = [
@@ -62,7 +62,11 @@ const getInitialState = () => {
     initialPersistentMenu.addMenuItem(subMenuItem, initialSubMenu.id);
   });
 
-  return {persistentMenu: initialPersistentMenu, foo: 'bar'};
+  return initialPersistentMenu;
+};
+
+export const getInitialState = () => {
+  return {persistentMenu: getInitialPersistentMenu(), foo: 'bar'};
 };
 
 const persistentMenuReducer = (state = getInitialState(), action) => {
@@ -80,27 +84,15 @@ const persistentMenuReducer = (state = getInitialState(), action) => {
       } else {
         return state;
       }
-    case 'ADD_URL_BUTTON':
-      if (action.submenu === 'root' && state.persistentMenu.call_to_actions.length < 5) {
-        const newButton = {
-          type: 'web_url',
-          title: action.title,
-          url: action.url,
-          webview_height_ratio: action.webview_height_ratio
-        };
-        newCallToActions = state.persistentMenu.call_to_actions.concat(newButton);
-        newPersistentMenu = cloneDeep(state.persistentMenu);
-        newPersistentMenu.call_to_actions = newCallToActions;
-        return {...state, persistentMenu: newPersistentMenu}
-      }
-      return state;
-    case 'ADD_SUB_MENU':
-      return state;
     case 'CLICK_ADD_NEW_ITEM':
       newPersistentMenu = cloneDeep(state.persistentMenu);
       newMenuItem = new PostbackButton('Title', '', action.parentId);
       newPersistentMenu.addMenuItem(newMenuItem, action.parentId);
-      return {...state, persistentMenu: newPersistentMenu, isEditingMenuItem: newMenuItem.id};
+      return {
+        ...state,
+        persistentMenu: newPersistentMenu,
+        isEditingMenuItem: newMenuItem.id,
+      };
     case 'CLICK_MENU_ITEM':
       return {...state, isEditingMenuItem: action.menuItemId};
     case 'EDIT_TITLE':
@@ -119,6 +111,12 @@ const persistentMenuReducer = (state = getInitialState(), action) => {
       newPersistentMenu = cloneDeep(state.persistentMenu);
       newPersistentMenu.getMenuItem(action.menuItemId).setUrl(action.url);
       return {...state, persistentMenu: newPersistentMenu};
+    case 'START_EDIT_SUB_MENU':
+      return {...state, isEditingSubMenu: action.menuItem.id};
+    case 'OPEN_SUB_MENU':
+      return {...state, subMenuOpen: action.menuItemId};
+    case 'OPEN_SUB_SUB_MENU':
+      return {...state, subSubMenuOpen: action.menuItemId};
     default:
       return state;
   }

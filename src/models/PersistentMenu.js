@@ -17,34 +17,14 @@ class PersistentMenu {
 
   }
 
-  setComposerInputDisabled(value) {
-    if (_.isBoolean(value)) {
-      this.composer_input_disabled = value;
-    }
-  }
+  createBodyForRequest() {
+    const result = {
+      locale: this.locale,
+      composer_input_disabled: this.composer_input_disabled,
+      call_to_actions: this.menuItems['root'].getCallToActionsForRequest()
+    };
 
-  addNewSubMenu(title, subMenuId) {
-    if (subMenuId && this.subMenus[subMenuId]) {
-      this.subMenus[subMenuId].addSubMenu(title);
-    } else {
-      this.subMenu.addSubMenu(title);
-    }
-  }
-
-  addNewWebUrlButton(title, url, webviewHeightRatio, subMenuId) {
-    if (subMenuId && this.subMenus[subMenuId]) {
-      this.subMenus[subMenuId].addWebUrlButton(title, url, webviewHeightRatio);
-    } else {
-      this.subMenu.addWebUrlButton(title, url, webviewHeightRatio);
-    }
-  }
-
-  addNewPostbackButton(title, payload, subMenuId) {
-    if (subMenuId && this.subMenus[subMenuId]) {
-      this.subMenus[subMenuId].addPostbackButton(title, payload);
-    } else {
-      this.subMenu.addPostbackButton(title, payload);
-    }
+    return result;
   }
 
   addSubMenu(subMenu, subMenuId) {

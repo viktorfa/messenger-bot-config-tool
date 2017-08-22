@@ -39,12 +39,40 @@ class PersistentMenuComponent extends React.Component {
 
                 clickMenuItem={this.props.clickMenuItem}
                 clickAddNewItem={this.props.clickAddNewItem}
+                startEditSubMenu={this.props.startEditSubMenu}
 
                 editTitle={this.props.editTitle}
                 editPayload={this.props.editPayload}
                 editWebUrl={this.props.editWebUrl}
                 editMenuItemType={this.props.editMenuItemType}
               />
+              <hr/>
+              {
+                this.props.subMenuOpen ?
+                  <div>
+                    Another expanded sub menu here {this.props.subMenuOpen}
+                    <code>
+                      {JSON.stringify(this.props.persistentMenu.getMenuItem(this.props.subMenuOpen))}
+                    </code>
+                    <ExpandedSubMenuComponent
+                      subMenu={this.props.persistentMenu.getMenuItem(this.props.subMenuOpen)}
+                      isEditingSubMenu={this.props.isEditingMenuItem}
+
+                      clickMenuItem={this.props.clickMenuItem}
+                      clickAddNewItem={this.props.clickAddNewItem}
+                      startEditSubMenu={this.props.startEditSubMenu}
+                      startEditSubSubMenu={this.props.startEditSubSubMenu}
+
+                      editTitle={this.props.editTitle}
+                      editPayload={this.props.editPayload}
+                      editWebUrl={this.props.editWebUrl}
+                      editMenuItemType={this.props.editMenuItemType}
+                    />
+                  </div>
+                  :
+                  ''
+              }
+
 
             </div>
           </div>

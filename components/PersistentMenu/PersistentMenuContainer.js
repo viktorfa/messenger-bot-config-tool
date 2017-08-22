@@ -12,8 +12,6 @@ import React from 'react';
 import {connect} from 'react-redux';
 import PersistentMenuComponent from "./PersistentMenuComponent";
 
-
-
 const clickAddNewItem = (parentId) => {
   return {type: 'CLICK_ADD_NEW_ITEM', parentId};
 };
@@ -38,11 +36,20 @@ const editWebUrl = (url, menuItemId) => {
   return {type: 'EDIT_WEB_URL', url, menuItemId};
 };
 
+const startEditSubMenu = (menuItemId) => {
+  return {type: 'OPEN_SUB_MENU', menuItemId}
+};
+
+const startEditSubSubMenu = (menuItemId) => {
+  return {type: 'OPEN_SUB_SUB_MENU', menuItemId}
+};
 
 const mapStateToProps = (state) => {
   return {
     persistentMenu: state.persistentMenuReducer.persistentMenu,
     isEditingMenuItem: state.persistentMenuReducer.isEditingMenuItem,
+    subMenuOpen: state.persistentMenuReducer.subMenuOpen,
+    subSubMenuOpen: state.persistentMenuReducer.subSubMenuOpen,
   };
 };
 
@@ -55,6 +62,8 @@ export const mapDispatchToProps = (dispatch) => {
     editMenuItemType: (menuItemType, menuItemId) => dispatch(editMenuItemType(menuItemType, menuItemId)),
     editPayload: (payload, menuItemId) => dispatch(editPayload(payload, menuItemId)),
     editWebUrl: (url, menuItemId) => dispatch(editWebUrl(url, menuItemId)),
+    startEditSubMenu: (menuItemId) => dispatch(startEditSubMenu(menuItemId)),
+    startEditSubSubMenu: (menuItemId) => dispatch(startEditSubSubMenu(menuItemId)),
   };
 };
 

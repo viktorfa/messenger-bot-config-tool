@@ -1,6 +1,8 @@
 import React from "react";
 import {connect} from 'react-redux';
+import _ from 'lodash';
 import AddMenuItemForm from './AddMenuItemForm';
+
 import {mapDispatchToProps} from './PersistentMenuContainer';
 
 class ExpandedSubMenuComponent extends React.Component {
@@ -20,8 +22,8 @@ class ExpandedSubMenuComponent extends React.Component {
   render() {
     return (
       <div>
+        <p>This is the ExpandedSubMenuComponent</p>
         <code>
-          {JSON.stringify(this.props)}
         </code>
         <div className="persistent-menu-buttons">
           {
@@ -41,14 +43,16 @@ class ExpandedSubMenuComponent extends React.Component {
           }
         </div>
         {
-          this.props.isEditingSubMenu ?
+          this.props.isEditingSubMenu && _.includes(Object.keys(this.props.subMenu.children), this.props.isEditingSubMenu) ?
             <div>
               <AddMenuItemForm
+                menuItem={this.props.subMenu.getMenuItem(this.props.isEditingSubMenu)}
                 editTitle={this.props.editTitle}
                 editPayload={this.props.editPayload}
                 editWebUrl={this.props.editWebUrl}
                 editMenuItemType={this.props.editMenuItemType}
-                menuItem={this.props.subMenu.getMenuItem(this.props.isEditingSubMenu)}
+                startEditSubMenu={this.props.startEditSubMenu}
+                startEditSubSubMenu={this.props.startEditSubSubMenu}
               />
             </div>
             :
@@ -59,13 +63,4 @@ class ExpandedSubMenuComponent extends React.Component {
   }
 }
 
-const mapStateToProps = (state) => {
- return {
- }
-};
-
-const ownMapDispatchToProps = (dispatch) => {
-  return mapDispatchToProps(dispatch);
-};
-
-export default connect(mapStateToProps, ownMapDispatchToProps)(ExpandedSubMenuComponent);
+export default ExpandedSubMenuComponent;

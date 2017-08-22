@@ -14,6 +14,23 @@ class AddMenuItemForm extends React.Component {
     this.props.editMenuItemType(menuItemType, this.props.menuItem.id);
   }
 
+  clickEditMenu(event) {
+    event.preventDefault();
+    if (this.props.menuItem.level === 1) {
+      this.startEditSubMenu(this.props.menuItem.id)
+    } else if (this.props.menuItem.level === 2) {
+      this.startEditSubSubMenu(this.props.menuItem.id)
+    }
+  }
+
+  startEditSubMenu() {
+    this.props.startEditSubMenu(this.props.menuItem.id);
+  }
+
+  startEditSubSubMenu() {
+    this.props.startEditSubSubMenu(this.props.menuItem.id);
+  }
+
   editPayload(event) {
     event.preventDefault();
     this.props.editPayload(event.target.value, this.props.menuItem.id);
@@ -79,7 +96,7 @@ class AddMenuItemForm extends React.Component {
                 </div>
               )
               : this.props.menuItem.type === 'nested' ?
-              <ExpandedSubMenuComponent subMenu={this.props.menuItem}/>
+              <button onClick={event => this.clickEditMenu(event)}>Edit menu</button>
               :
               ''
           }
