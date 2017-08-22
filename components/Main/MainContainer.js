@@ -62,11 +62,39 @@ const sendGetStartedButtonRequest = (accessToken, body) => {
   }
 };
 
+const sendFacebookPostRequest = (accessToken, body, successMessage) => {
+  return (dispatch) => {
+    fetch(`https://graph.facebook.com/v2.6/me/messenger_profile?access_token=${accessToken}`, {
+      method: 'POST',
+      body: JSON.stringify(body),
+      headers: {'Content-Type': 'application/json'}
+    }).then(response => {
+      if (response.ok) {
+        return response.json();
+      }
+      throw "Something wrong with the request";
+    }).then(response => {
+      console.log(response);
+      return dispatch({type: 'SEND_FACEBOOK_HTTP_REQUEST_FINISH', message: successMessage})
+    }).catch(error => {
+      console.log(error);
+      return dispatch({type: 'SEND_FACEBOOK_HTTP_REQUEST_FINISH', message: 'Something went wrong'});
+    });
+    return dispatch({type: 'START_SEND_FACEBOOK_HTTP_REQUEST'});
+  }
+};
+
+const switchTab = (tabName) => {
+  return {type: 'SWITCH_TAB', tabName}
+};
+
 const mapStateToProps = (state) => {
   return {
     main: state.mainReducer,
+    currentTab: state.mainReducer.currentTab,
     persistentMenu: state.persistentMenuReducer,
     getStartedButton: state.getStartedReducer,
+    greetingText: state.greetingTextReducer,
   };
 };
 
@@ -75,6 +103,8 @@ const mapDispatchToProps = (dispatch) => {
     setAccessToken: (accessToken) => dispatch(setAccessToken(accessToken)),
     sendPersistentMenuRequest: (accessToken, body) => dispatch(sendPersistentMenuRequest(accessToken, body)),
     sendGetStartedButtonRequest: (accessToken, body) => dispatch(sendGetStartedButtonRequest(accessToken, body)),
+    sendFacebookPostRequest: (accessToken, body, successMessage) => dispatch(sendFacebookPostRequest(accessToken, body, successMessage)),
+    switchTab: (tabName) => dispatch(switchTab(tabName)),
   };
 };
 

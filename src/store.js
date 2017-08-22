@@ -14,8 +14,9 @@ import thunk from 'redux-thunk';
 import mainReducer from './reducers/mainReducer';
 import persistentMenuReducer from './reducers/persistentMenuReducer';
 import getStartedReducer from './reducers/getStartedReducer';
+import greetingTextReducer from "./reducers/greetingTextReducer";
 
 export default createStore(
-  combineReducers({mainReducer, persistentMenuReducer, getStartedReducer}),
+  combineReducers({mainReducer, persistentMenuReducer, getStartedReducer, greetingTextReducer}),
   composeWithDevTools(applyMiddleware(thunk))
 )

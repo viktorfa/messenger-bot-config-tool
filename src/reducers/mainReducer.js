@@ -1,4 +1,4 @@
-const inititalState = {foo: 'bar'};
+const inititalState = {foo: 'bar', currentTab: 'getStarted'};
 
 const mainReducer = (state = inititalState, action) => {
   switch (action.type) {
@@ -8,6 +8,12 @@ const mainReducer = (state = inititalState, action) => {
       return {...state, loading: true};
     case 'PERSISTENT_MENU_REQUEST_FINISH':
       return {...state, loading: false, message: action.message};
+    case 'START_SEND_FACEBOOK_HTTP_REQUEST':
+      return {...state, loading: true};
+    case 'SEND_FACEBOOK_HTTP_REQUEST_FINISH':
+      return {...state, loading: false, message: action.message};
+    case 'SWITCH_TAB':
+      return {...state, currentTab: action.tabName};
     default:
       return state;
   }

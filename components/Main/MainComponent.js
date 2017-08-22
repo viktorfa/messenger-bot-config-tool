@@ -11,6 +11,7 @@
 import React from 'react';
 import PersistentMenuContainer from '../PersistentMenu/PersistentMenuContainer';
 import GetStartedContainer from '../GetStarted/GetStartedContainer';
+import GreetingTextContainer from '../GreetingText/GreetingTextContainer';
 
 class MainComponent extends React.Component {
   constructor(props) {
@@ -22,16 +23,22 @@ class MainComponent extends React.Component {
     event.preventDefault();
     const accessToken = this.props.main.accessToken;
     const requestBody = this.props.persistentMenu.persistentMenu.createBodyForRequest();
-    this.props.sendPersistentMenuRequest(accessToken, requestBody);
+    this.props.sendFacebookPostRequest(accessToken, requestBody, 'Persistent menu successfully updated');
   }
 
   sendGetStartedButtonRequest(event) {
     event.preventDefault();
     const accessToken = this.props.main.accessToken;
     const requestBody = this.props.getStartedButton.getStartedButton.createBodyForRequest();
-    console.log("REQUEST BODY");
-    console.log(requestBody);
-    console.log(JSON.stringify(requestBody));
+    this.props.sendFacebookPostRequest(accessToken, requestBody, 'Get started button successfully updated');
+    this.props.sendGetStartedButtonRequest(accessToken, requestBody);
+  }
+
+  sendGreetingTextRequest(event) {
+    event.preventDefault();
+    const accessToken = this.props.main.accessToken;
+    const requestBody = this.props.greetingText.greetingText.createBodyForRequest();
+    this.props.sendFacebookPostRequest(accessToken, requestBody, 'Greeting text successfully updated');
     this.props.sendGetStartedButtonRequest(accessToken, requestBody);
   }
 
@@ -39,6 +46,19 @@ class MainComponent extends React.Component {
     event.preventDefault();
     this.props.setAccessToken(event.target.value);
   }
+
+  switchTab(event, tabName) {
+    event.preventDefault();
+    this.props.switchTab(tabName);
+  }
+
+  componentDidMount() {
+    componentHandler.upgradeDom();
+  };
+
+  componentDidUpdate() {
+    componentHandler.upgradeDom();
+  };
 
   render() {
     return (
@@ -58,15 +78,38 @@ class MainComponent extends React.Component {
             <label htmlFor="access-token">Your access token</label>
             <input type="text" id="access-token" onChange={event => this.accessTokenChange(event)}/>
           </form>
-          <button onClick={event => this.sendPersistentMenuRequest(event)}>
-            Send persistent menu request
-          </button>
-          <button onClick={event => this.sendGetStartedButtonRequest(event)}>
-            Send get started button request
-          </button>
         </div>
-        <GetStartedContainer/>
-        <PersistentMenuContainer/>
+        <div>
+          <div className="mdl-tabs mdl-js-tabs mdl-js-ripple-effect">
+            <div className="mdl-tabs__tab-bar">
+              <a href="#get-started" className="mdl-tabs__tab is-active" onClick={event => this.switchTab(event, 'getStarted')}>Get started</a>
+              <a href="#persistent-menu" className="mdl-tabs__tab" onClick={event => this.switchTab(event, 'persistentMenu')}>Persistent menu</a>
+            </div>
+          </div>
+        </div>
+        {
+          this.props.currentTab === 'persistentMenu' ?
+            <div>
+              <button onClick={event => this.sendPersistentMenuRequest(event)}>
+                Send persistent menu request
+              </button>
+              <PersistentMenuContainer/>
+            </div>
+            :
+            this.props.currentTab === 'getStarted' ?
+              <div>
+                <button onClick={event => this.sendGetStartedButtonRequest(event)}>
+                  Send get started button request
+                </button>
+                <button onClick={event => this.sendGreetingTextRequest(event)}>
+                  Send greeting text request
+                </button>
+                <GetStartedContainer/>
+                <GreetingTextContainer/>
+              </div>
+              :
+              ''
+        }
       </div>
     )
   }

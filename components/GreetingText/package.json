@@ -1,0 +1,6 @@
+{
+  "name": "GreetingText",
+  "version": "0.0.0",
+  "private": true,
+  "main": "./GreetingTextContainer.js"
+}
