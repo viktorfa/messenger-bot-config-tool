@@ -15,7 +15,6 @@ import MainComponent from './MainComponent';
 const mapStateToProps = (state) => {
   return {
     main: state.mainReducer,
-    persistentMenu: state.persistentMenuReducer.persistentMenu
   };
 };
 

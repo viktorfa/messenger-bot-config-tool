@@ -9,7 +9,11 @@
  */
 
 import {createStore, combineReducers} from 'redux';
+import {composeWithDevTools} from 'redux-devtools-extension'
 import mainReducer from './reducers/mainReducer';
 import persistentMenuReducer from './reducers/persistentMenuReducer';
 
-export default createStore(combineReducers({mainReducer, persistentMenuReducer}))
+export default createStore(
+  combineReducers({mainReducer, persistentMenuReducer}),
+  composeWithDevTools()
+)

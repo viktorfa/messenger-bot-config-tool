@@ -9,7 +9,7 @@
  */
 
 import React from 'react';
-import Link from '../Link';
+import PersistentMenuContainer from '../PersistentMenu/PersistentMenuContainer';
 
 class MainComponent extends React.Component {
   constructor(props) {
@@ -19,21 +19,7 @@ class MainComponent extends React.Component {
   render() {
     return (
       <div>
-        <div className="mdl-cell">
-          <p>This is the Main component</p>
-          <code>
-            {JSON.stringify(this.props)}
-          </code>
-        </div>
-
-        <div className="mdl-grid">
-          <div className="mdl-cell mdl-cell--4-col-tablet mdl-cell--6-col">
-            Heisann
-          </div>
-          <div className="mdl-cell mdl-cell--4-col-tablet mdl-cell--6-col">
-            <code>{JSON.stringify(this.props.persistentMenu)}</code>
-          </div>
-        </div>
+        <PersistentMenuContainer persistentMenu={this.props.persistentMenu}/>
       </div>
     )
   }
