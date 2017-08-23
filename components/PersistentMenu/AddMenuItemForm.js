@@ -86,7 +86,7 @@ class AddMenuItemForm extends React.Component {
               : this.props.menuItem.type === 'postback' ?
               (
                 <div>
-                  <input
+                  <textarea
                     type="text"
                     id="payload"
                     defaultValue={this.props.menuItem.payload || ''}
