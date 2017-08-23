@@ -20,4 +20,24 @@ describe('persistentMenuReducer', () => {
     state = persistentMenuReducer(undefined, {type: ''});
     deepFreeze(state);
   });
+
+  it('should be able to add a menu item', () => {
+    let menuItemsBefore = Object.keys(state.persistentMenu.menuItems).length;
+    let parentId = 'root';
+    state = persistentMenuReducer(state, {type: 'CLICK_ADD_NEW_ITEM', parentId});
+    deepFreeze(state);
+    expect(Object.keys(state.persistentMenu.menuItems).length).to.equal(menuItemsBefore + 1)
+  });
+
+  it('should be able to add a new sub menu', () => {
+    let menuItemsBefore = Object.keys(state.persistentMenu.menuItems).length;
+    let parentId = 'root';
+    state = persistentMenuReducer(state, {type: 'CLICK_ADD_NEW_ITEM', parentId});
+    deepFreeze(state);
+    let menuItemId = state.persistentMenu.getMenuItem(state.persistentMenu.idCount).id;
+    let menuItemType = 'nested';
+    state = persistentMenuReducer(state, {type: 'EDIT_MENU_ITEM_TYPE', menuItemId, menuItemType});
+    deepFreeze(state);
+    expect(state.persistentMenu.getMenuItem(menuItemId).type).to.equal(menuItemType);
+  });
 });

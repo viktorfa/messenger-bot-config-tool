@@ -5,6 +5,10 @@ class CallToAction extends SubMenuItem {
     super(parent, title, id);
     this.type = type;
   }
+
+  setType(type) {
+    this.type = type;
+  }
 }
 
 export default CallToAction;

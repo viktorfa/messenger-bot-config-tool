@@ -46,13 +46,16 @@ class PersistentMenuComponent extends React.Component {
                 editWebUrl={this.props.editWebUrl}
                 editMenuItemType={this.props.editMenuItemType}
               />
-              <hr/>
+            </div>
+          </div>
+          <div className="mdl-cell mdl-cell--4-col-tablet mdl-cell--6-col">
+            <div>
               {
                 this.props.subMenuOpen ?
                   <div>
                     Another expanded sub menu here {this.props.subMenuOpen}
                     <code>
-                      {JSON.stringify(this.props.persistentMenu.getMenuItem(this.props.subMenuOpen))}
+                      {/*JSON.stringify(this.props.persistentMenu.getMenuItem(this.props.subMenuOpen))*/}
                     </code>
                     <ExpandedSubMenuComponent
                       subMenu={this.props.persistentMenu.getMenuItem(this.props.subMenuOpen)}
@@ -72,12 +75,7 @@ class PersistentMenuComponent extends React.Component {
                   :
                   ''
               }
-
-
             </div>
-          </div>
-          <div className="mdl-cell mdl-cell--4-col-tablet mdl-cell--6-col">
-            <code>på deisann {this.props.isEditingMenuItem}</code>
           </div>
         </div>
       </div>

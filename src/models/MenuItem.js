@@ -1,12 +1,16 @@
 import _ from 'lodash';
 import CallToAction from "./CallToAction";
 
-class SubMenu extends CallToAction {
-  constructor(title, level, parent, id) {
-    super('nested', title, parent, id);
-    this.level = level;
+class MenuItem extends CallToAction {
+  constructor(title, parent, config) {
+    super(config.type || 'postback', title, parent.id, config.id || null);
+
+    this.level = parent.level + 1;
     this.children = {};
     this.call_to_actions = [];
+    this.url = config.url || 'http://example.com';
+    this.webview_height_ratio = config.webview_height_ratio || 'full';
+    this.payload = config.payload || 'PAYLOAD'
   }
 
   addChild(menuItem) {
@@ -26,7 +30,7 @@ class SubMenu extends CallToAction {
 
   getCallToActionsForRequest() {
     return _.map(this.children, (menuItem, key) => {
-      switch(menuItem.type) {
+      switch (menuItem.type) {
         case 'web_url':
           return {
             type: menuItem.type,
@@ -51,6 +55,19 @@ class SubMenu extends CallToAction {
       }
     });
   }
+
+  setPayload(payload) {
+    this.payload = payload;
+  }
+
+  setUrl(url) {
+    this.url = url;
+  }
+
+  setWebViewHeightRatio(webViewHeightRatio) {
+    this.webview_height_ratio = webViewHeightRatio;
+  }
+
 }
 
-export default SubMenu;
+export default MenuItem;

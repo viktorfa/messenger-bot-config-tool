@@ -27,7 +27,6 @@ class HomePage extends React.Component {
           // eslint-disable-next-line react/no-danger
           dangerouslySetInnerHTML={{ __html: html }}
         />
-        <div>PEnis</div>
         <MainContainer/>
       </Layout>
     );

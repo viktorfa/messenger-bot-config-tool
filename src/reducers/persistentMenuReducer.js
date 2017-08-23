@@ -1,8 +1,6 @@
 import {cloneDeep, isBoolean} from 'lodash';
-import PostbackButton from "../models/PostbackButton";
-import SubMenu from "../models/SubMenu";
-import WebUrlButton from "../models/WebUrlButton";
 import PersistentMenu from "../models/PersistentMenu";
+import MenuItem from "../models/MenuItem";
 
 const initialState = {
   foo: 'bar',
@@ -43,19 +41,20 @@ const initialState = {
 
 export const getInitialPersistentMenu = () => {
   const initialPersistentMenu = new PersistentMenu();
-  const initialSubMenu = new SubMenu('My Account', 1, 'root');
+  const initialRootMenu = initialPersistentMenu.getMenuItem('root');
+  const initialSubMenu = new MenuItem('My Account', initialRootMenu, {type: 'nested'});
   const initialMenuItems = [
     initialSubMenu,
-    new WebUrlButton('Latest News', 'https://inneklemtedager.no', 'root'),
+    new MenuItem('Latest News', initialRootMenu, {type: 'web_url', url: 'https://inneklemtedager.no'}),
   ];
   initialMenuItems.forEach(menuItem => {
     initialPersistentMenu.addMenuItem(menuItem, 'root')
   });
 
   const initialSubMenuItems = [
-    new PostbackButton('Pay Bill', 'PAYBILL_PAYLOAD', initialSubMenu.id),
-    new PostbackButton('History', 'HISTORY_PAYLOAD', initialSubMenu.id),
-    new PostbackButton('Contact Info', 'CONTACT_INFO_PAYLOAD', initialSubMenu.id),
+    new MenuItem('Pay Bill', initialRootMenu, {type: 'postback', payload: 'PAYBILL_PAYLOAD'}),
+    new MenuItem('History', initialRootMenu, {type: 'postback', payload: 'HISTORY_PAYLOAD'}),
+    new MenuItem('Contact Info', initialRootMenu, {type: 'postback', payload: 'CONTACT_INFO_PAYLOAD'}),
   ];
 
   initialSubMenuItems.forEach(subMenuItem => {
@@ -70,10 +69,7 @@ export const getInitialState = () => {
 };
 
 const persistentMenuReducer = (state = getInitialState(), action) => {
-  console.log("GOT NEW ACTION");
-  console.log(action);
   let newPersistentMenu;
-  let newCallToActions;
   let newMenuItem;
   switch (action.type) {
     case 'EDIT_COMPOSER_INPUT_DISABLED':
@@ -86,7 +82,7 @@ const persistentMenuReducer = (state = getInitialState(), action) => {
       }
     case 'CLICK_ADD_NEW_ITEM':
       newPersistentMenu = cloneDeep(state.persistentMenu);
-      newMenuItem = new PostbackButton('Title', '', action.parentId);
+      newMenuItem = new MenuItem('Title', state.persistentMenu.getMenuItem(action.parentId), {});
       newPersistentMenu.addMenuItem(newMenuItem, action.parentId);
       return {
         ...state,

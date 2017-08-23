@@ -46,7 +46,7 @@ class AddMenuItemForm extends React.Component {
       <div>
         <p>This is the AddMenuItemForm component</p>
         <code>
-          {JSON.stringify(this.props.menuItem)}
+          {/*JSON.stringify(this.props.menuItem)*/}
         </code>
         <form onSubmit={event => this.submitForm(event)}>
           <div>
