@@ -89,6 +89,16 @@ const persistentMenuReducer = (state = getInitialState(), action) => {
         persistentMenu: newPersistentMenu,
         isEditingMenuItem: newMenuItem.id,
       };
+    case 'DELETE_MENU_ITEM':
+      newPersistentMenu = cloneDeep(state.persistentMenu);
+      newPersistentMenu.deleteMenuItem(action.menuItemId);
+      return {
+        ...state,
+        persistentMenu: newPersistentMenu,
+        isEditingMenuItem: state.isEditingMenuItem === action.menuItemId ? null : state.isEditingMenuItem,
+        subMenuOpen: state.subMenuOpen === action.menuItemId ? null : state.subMenuOpen,
+        subSubMenuOpen: state.subSubMenuOpen === action.menuItemId ? null : state.subSubMenuOpen,
+      };
     case 'CLICK_MENU_ITEM':
       return {...state, isEditingMenuItem: action.menuItemId};
     case 'EDIT_TITLE':

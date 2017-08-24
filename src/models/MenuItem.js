@@ -22,9 +22,6 @@ class MenuItem extends CallToAction {
   }
 
   getMenuItem(id) {
-    console.log("GETTING MENU ITEM");
-    console.log(id);
-    console.log(this.children);
     return this.children[id];
   }
 

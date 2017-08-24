@@ -88,7 +88,7 @@ class MainComponent extends React.Component {
         {
           this.props.currentTab === 'persistentMenu' ?
             <div>
-              <button onClick={event => this.sendPersistentMenuRequest(event)}>
+              <button onClick={event => this.sendPersistentMenuRequest(event)} disabled={!this.props.main.accessToken}>
                 Send persistent menu request
               </button>
               <PersistentMenuContainer/>
@@ -96,10 +96,10 @@ class MainComponent extends React.Component {
             :
             this.props.currentTab === 'getStarted' ?
               <div>
-                <button onClick={event => this.sendGetStartedButtonRequest(event)}>
+                <button onClick={event => this.sendGetStartedButtonRequest(event)} disabled={!this.props.main.accessToken}>
                   Send get started button request
                 </button>
-                <button onClick={event => this.sendGreetingTextRequest(event)}>
+                <button onClick={event => this.sendGreetingTextRequest(event)} disabled={!this.props.main.accessToken}>
                   Send greeting text request
                 </button>
                 <GetStartedContainer/>

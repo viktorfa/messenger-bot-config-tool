@@ -39,6 +39,7 @@ class PersistentMenuComponent extends React.Component {
 
                 clickMenuItem={this.props.clickMenuItem}
                 clickAddNewItem={this.props.clickAddNewItem}
+                deleteMenuItem={this.props.deleteMenuItem}
                 startEditSubMenu={this.props.startEditSubMenu}
 
                 editTitle={this.props.editTitle}
@@ -63,6 +64,7 @@ class PersistentMenuComponent extends React.Component {
 
                       clickMenuItem={this.props.clickMenuItem}
                       clickAddNewItem={this.props.clickAddNewItem}
+                      deleteMenuItem={this.props.deleteMenuItem}
                       startEditSubMenu={this.props.startEditSubMenu}
                       startEditSubSubMenu={this.props.startEditSubSubMenu}
 

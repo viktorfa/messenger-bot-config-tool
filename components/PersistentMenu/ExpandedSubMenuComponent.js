@@ -19,6 +19,11 @@ class ExpandedSubMenuComponent extends React.Component {
     this.props.clickAddNewItem(this.props.subMenu.id)
   }
 
+  deleteMenuItem(event, menuItem) {
+    event.preventDefault();
+    this.props.deleteMenuItem(menuItem.id);
+  }
+
   render() {
     return (
       <div>
@@ -30,7 +35,12 @@ class ExpandedSubMenuComponent extends React.Component {
             _.map(this.props.subMenu.children, (menuItem, key) => {
               return (
                 <div key={key} className="persistent-menu-button">
-                  <button onClick={event => this.clickMenuButton(event, menuItem)}>{menuItem.title}</button>
+                  <button onClick={event => this.clickMenuButton(event, menuItem)}>
+                    {menuItem.title || 'Enter title'}
+                  </button>
+                  <button onClick={event => this.deleteMenuItem(event, menuItem)}>
+                    Delete
+                  </button>
                 </div>
               )
             })

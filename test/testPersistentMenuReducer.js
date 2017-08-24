@@ -40,4 +40,13 @@ describe('persistentMenuReducer', () => {
     deepFreeze(state);
     expect(state.persistentMenu.getMenuItem(menuItemId).type).to.equal(menuItemType);
   });
+
+  it('should be able to delete a menu item', () => {
+    let menuItemId = 5;
+    let menuItemsBefore = Object.keys(state.persistentMenu.menuItems).length;
+    state = persistentMenuReducer(state, {type: 'DELETE_MENU_ITEM', menuItemId});
+    deepFreeze(state);
+    expect(state.persistentMenu.getMenuItem(menuItemId)).to.be.undefined;
+    expect(Object.keys(state.persistentMenu.menuItems).length).to.equal(menuItemsBefore - 1);
+  })
 });

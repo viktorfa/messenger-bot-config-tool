@@ -44,6 +44,10 @@ const startEditSubSubMenu = (menuItemId) => {
   return {type: 'OPEN_SUB_SUB_MENU', menuItemId}
 };
 
+const deleteMenuItem = (menuItemId) => {
+  return {type: 'DELETE_MENU_ITEM', menuItemId};
+};
+
 const mapStateToProps = (state) => {
   return {
     persistentMenu: state.persistentMenuReducer.persistentMenu,
@@ -58,6 +62,7 @@ export const mapDispatchToProps = (dispatch) => {
   return {
     clickAddNewItem: (parentId) => dispatch(clickAddNewItem(parentId)),
     clickMenuItem: (menuItemId) => dispatch(clickMenuItem(menuItemId)),
+    deleteMenuItem: (menuItemId) => dispatch(deleteMenuItem(menuItemId)),
     editTitle: (title, menuItemId) => dispatch(editTitle(title, menuItemId)),
     editMenuItemType: (menuItemType, menuItemId) => dispatch(editMenuItemType(menuItemType, menuItemId)),
     editPayload: (payload, menuItemId) => dispatch(editPayload(payload, menuItemId)),

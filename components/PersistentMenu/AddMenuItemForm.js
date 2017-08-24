@@ -69,7 +69,7 @@ class AddMenuItemForm extends React.Component {
               Menu
             </button>
           </div>
-          <input type="text" onChange={event => this.editTitle(event)} value={this.props.menuItem.title}/>
+          <input type="text" onChange={event => this.editTitle(event)} value={this.props.menuItem.title} maxLength={30}/>
           {
             this.props.menuItem.type === 'web_url' ?
               (
@@ -77,7 +77,7 @@ class AddMenuItemForm extends React.Component {
                   <input
                     type="url"
                     id="web-url"
-                    defaultValue={this.props.menuItem.url || ''}
+                    value={this.props.menuItem.url}
                     placeholder="https://inneklemtedager.no"
                     onChange={event => this.editWebUrl(event)}
                   />
@@ -89,7 +89,7 @@ class AddMenuItemForm extends React.Component {
                   <textarea
                     type="text"
                     id="payload"
-                    defaultValue={this.props.menuItem.payload || ''}
+                    value={this.props.menuItem.payload}
                     placeholder="PAYLOAD"
                     onChange={event => this.editPayload(event)}
                   />

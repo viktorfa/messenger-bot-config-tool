@@ -45,6 +45,11 @@ class PersistentMenu {
     this.getMenuItem(menuItemId).setType(type);
   }
 
+  deleteMenuItem(id) {
+    delete this.menuItems[this.getMenuItem(id).parent].children[id];
+    delete this.menuItems[id];
+  }
+
   getId() {
     return '' + ++this.idCount;
   }
