@@ -14,7 +14,7 @@ class GetStartedComponent extends React.Component {
         <code>{JSON.stringify(this.props)}</code>
         <div>
           <label htmlFor="get-started-payload">Get started button payload</label>
-          <input type="text" id="get-started-payload" onChange={event => this.editPayload(event)}/>
+          <textarea type="text" id="get-started-payload" onChange={event => this.editPayload(event)}/>
         </div>
       </div>
     )
