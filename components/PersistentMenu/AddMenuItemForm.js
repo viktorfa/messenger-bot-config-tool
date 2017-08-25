@@ -69,7 +69,7 @@ class AddMenuItemForm extends React.Component {
               Menu
             </button>
           </div>
-          <input type="text" onChange={event => this.editTitle(event)} value={this.props.menuItem.title} maxLength={30}/>
+          <input type="text" onChange={event => this.editTitle(event)} value={this.props.menuItem.title} maxLength={30} autoFocus/>
           {
             this.props.menuItem.type === 'web_url' ?
               (

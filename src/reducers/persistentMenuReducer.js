@@ -122,7 +122,9 @@ const persistentMenuReducer = (state = getInitialState(), action) => {
     case 'OPEN_SUB_MENU':
       return {...state, subMenuOpen: action.menuItemId};
     case 'OPEN_SUB_SUB_MENU':
-      return {...state, subSubMenuOpen: action.menuItemId};
+      return {...state, subSubMenuOpen: action.menuItemId, menuViewLevel: 1};
+    case 'SLIDE_MENU_VIEW':
+      return {...state, menuViewLevel: action.menuViewLevel};
     default:
       return state;
   }

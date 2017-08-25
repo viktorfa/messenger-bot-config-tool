@@ -18,7 +18,11 @@ class MenuItem extends CallToAction {
   }
 
   canAddMenuItem() {
-    return Object.keys(this.children).length < 3;
+    if (this.level === 0) {
+      return Object.keys(this.children).length < 3;
+    } else {
+      return Object.keys(this.children).length < 5
+    }
   }
 
   getMenuItem(id) {

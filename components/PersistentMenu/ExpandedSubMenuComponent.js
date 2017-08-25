@@ -1,27 +1,72 @@
 import React from "react";
-import {connect} from 'react-redux';
 import _ from 'lodash';
 import AddMenuItemForm from './AddMenuItemForm';
-
-import {mapDispatchToProps} from './PersistentMenuContainer';
+import PersistentMenuButton from './PersistentMenuButton';
+import s from './styles.css';
 
 class ExpandedSubMenuComponent extends React.Component {
-
-  clickMenuButton(event, menuButton) {
-    event.preventDefault();
-    console.log("Clicked menu button");
-    this.props.clickMenuItem(menuButton.id);
+  constructor(props) {
+    super(props);
+    this.state = {showAddMenuItemForm: false};
+    this.addMenuItemFormWrapperRef = null;
   }
 
   clickAddNewMenuItem(event) {
     event.preventDefault();
     console.log("Clicked add new menu item");
-    this.props.clickAddNewItem(this.props.subMenu.id)
+    this.setState({
+      addMenuItemFormXPos: `${event.clientX}px`,
+      addMenuItemFormYPos: `${event.clientY}px`,
+      showAddMenuItemForm: true
+    });
+    this.props.clickAddNewItem(this.props.subMenu.id);
   }
 
-  deleteMenuItem(event, menuItem) {
+  clickMenuItem(event, menuButton) {
     event.preventDefault();
-    this.props.deleteMenuItem(menuItem.id);
+    if (event.target.nodeName !== 'BUTTON') {
+      this.setState({
+        addMenuItemFormXPos: `${event.clientX}px`,
+        addMenuItemFormYPos: `${event.clientY}px`,
+        showAddMenuItemForm: true
+      });
+      this.props.clickMenuItem(menuButton.id);
+    }
+  }
+
+  closeAddMenuItemForm() {
+    this.setState({showAddMenuItemForm: false});
+  }
+
+  /**
+   * Set up listening to all mouse clicks to close add menu item form on click outside the form wrapper.
+   * Thanks to Ben Bud https://stackoverflow.com/a/42234988/5441099
+   */
+  componentDidMount() {
+    document.addEventListener('mousedown', this.handleClickOutside.bind(this));
+    document.addEventListener('keydown', this.handleKeyDown.bind(this));
+  }
+
+  componentWillUnmount() {
+    document.removeEventListener('mousedown', this.handleClickOutside.bind(this));
+    document.addEventListener('keydown', this.handleKeyDown.bind(this));
+  }
+
+  handleClickOutside(event) {
+    if (this.addMenuItemFormWrapperRef && !this.addMenuItemFormWrapperRef.contains(event.target)) {
+      this.closeAddMenuItemForm();
+    }
+  }
+
+  handleKeyDown(event) {
+    console.log(event);
+    if ((event.key === 'Escape' || event.keyCode === 27) && this.addMenuItemFormWrapperRef && !this.addMenuItemFormWrapperRef.contains(event.target)) {
+      this.closeAddMenuItemForm();
+    }
+  }
+
+  setAddMenuItemFormWrapperRef(node) {
+    this.addMenuItemFormWrapperRef = node;
   }
 
   render() {
@@ -30,31 +75,51 @@ class ExpandedSubMenuComponent extends React.Component {
         <p>This is the ExpandedSubMenuComponent</p>
         <code>
         </code>
-        <div className="persistent-menu-buttons">
+        <div className={`${s['persistent-menu-buttons']}`}>
+          <div className={`${s['persistent-menu-button']} ${s['persistent-menu-header']}`}>
+            {
+              this.props.subMenu.level === 0 &&
+              <div>Menu</div>
+              ||
+              <div>{this.props.subMenu.title || 'Enter title'}</div>
+            }
+          </div>
           {
             _.map(this.props.subMenu.children, (menuItem, key) => {
-              return (
-                <div key={key} className="persistent-menu-button">
-                  <button onClick={event => this.clickMenuButton(event, menuItem)}>
-                    {menuItem.title || 'Enter title'}
-                  </button>
-                  <button onClick={event => this.deleteMenuItem(event, menuItem)}>
-                    Delete
-                  </button>
-                </div>
-              )
+              return <PersistentMenuButton
+                key={key}
+                menuItem={menuItem}
+                clickMenuItem={this.clickMenuItem.bind(this)}
+                deleteMenuItem={this.props.deleteMenuItem}
+                startEditSubMenu={this.props.startEditSubMenu}
+                startEditSubSubMenu={this.props.startEditSubSubMenu}
+              />
             })
           }
           {
             this.props.subMenu.canAddMenuItem() ?
-              <button onClick={event => this.clickAddNewMenuItem(event)}>New Item</button>
+              <div className={`${s['persistent-menu-button']} ${s['persistent-menu-delete-button']}`}>
+                <button className="mdl-button" onClick={event => this.clickAddNewMenuItem(event)}>
+                  New Item
+                </button>
+              </div>
               :
               ''
           }
         </div>
         {
-          this.props.isEditingSubMenu && _.includes(Object.keys(this.props.subMenu.children), this.props.isEditingSubMenu) ?
-            <div>
+          this.props.isEditingSubMenu && this.state.showAddMenuItemForm && _.includes(Object.keys(this.props.subMenu.children), this.props.isEditingSubMenu) ?
+            <div
+              ref={wrapper => this.setAddMenuItemFormWrapperRef(wrapper)}
+              style={{
+                position: 'fixed',
+                left: this.state.addMenuItemFormXPos,
+                top: this.state.addMenuItemFormYPos,
+                border: '1px gray solid',
+                padding: '5px',
+                background: 'white'
+              }}
+            >
               <AddMenuItemForm
                 menuItem={this.props.subMenu.getMenuItem(this.props.isEditingSubMenu)}
                 editTitle={this.props.editTitle}

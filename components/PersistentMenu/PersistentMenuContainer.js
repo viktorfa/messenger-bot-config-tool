@@ -48,12 +48,17 @@ const deleteMenuItem = (menuItemId) => {
   return {type: 'DELETE_MENU_ITEM', menuItemId};
 };
 
+const slideMenuView = (menuViewLevel) => {
+   return {type: 'SLIDE_MENU_VIEW', menuViewLevel};
+};
+
 const mapStateToProps = (state) => {
   return {
     persistentMenu: state.persistentMenuReducer.persistentMenu,
     isEditingMenuItem: state.persistentMenuReducer.isEditingMenuItem,
     subMenuOpen: state.persistentMenuReducer.subMenuOpen,
     subSubMenuOpen: state.persistentMenuReducer.subSubMenuOpen,
+    menuViewLevel: state.persistentMenuReducer.menuViewLevel,
   };
 };
 
@@ -69,6 +74,7 @@ export const mapDispatchToProps = (dispatch) => {
     editWebUrl: (url, menuItemId) => dispatch(editWebUrl(url, menuItemId)),
     startEditSubMenu: (menuItemId) => dispatch(startEditSubMenu(menuItemId)),
     startEditSubSubMenu: (menuItemId) => dispatch(startEditSubSubMenu(menuItemId)),
+    slideMenuView: (menuViewLevel) => dispatch(slideMenuView(menuViewLevel)),
   };
 };
 
