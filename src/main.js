@@ -29,6 +29,7 @@ ReactDOM.render(
     <ConnectedRouter history={history}>
       <div>
         <Route exact path="/" component={HomePage}/>
+        <Route path="/main" component={HomePage}/>
         <Route exact path="/about" component={AboutPage}/>
       </div>
     </ConnectedRouter>

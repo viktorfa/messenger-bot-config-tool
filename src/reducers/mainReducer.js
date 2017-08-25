@@ -8,8 +8,6 @@ const mainReducer = (state = inititalState, action) => {
       return {...state, loading: true};
     case 'SEND_FACEBOOK_HTTP_REQUEST_FINISH':
       return {...state, loading: false, message: action.message};
-    case 'SWITCH_TAB':
-      return {...state, currentTab: action.tabName};
     default:
       return state;
   }

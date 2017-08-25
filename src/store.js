@@ -22,9 +22,9 @@ import greetingTextReducer from "./reducers/greetingTextReducer";
 export const history = createHistory();
 
 // Build the middleware for intercepting and dispatching navigation actions
-const middleware = routerMiddleware(history, thunk);
+const middleware = routerMiddleware(history);
 
 export default createStore(
   combineReducers({mainReducer, persistentMenuReducer, getStartedReducer, greetingTextReducer, routerReducer}),
-  composeWithDevTools(applyMiddleware(middleware))
+  composeWithDevTools(applyMiddleware(thunk, middleware))
 )

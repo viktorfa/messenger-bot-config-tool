@@ -11,6 +11,7 @@
 import React from 'react';
 import {connect} from 'react-redux';
 import MainComponent from './MainComponent';
+import {push} from "react-router-redux";
 
 const setAccessToken = (accessToken) => {
   return {type: 'SET_ACCESS_TOKEN', accessToken};
@@ -39,7 +40,9 @@ const sendFacebookPostRequest = (accessToken, body, successMessage) => {
 };
 
 const switchTab = (tabName) => {
-  return {type: 'SWITCH_TAB', tabName}
+  return dispatch => {
+    dispatch(push(`/main/${tabName}`));
+  }
 };
 
 const mapStateToProps = (state) => {
@@ -49,6 +52,7 @@ const mapStateToProps = (state) => {
     persistentMenu: state.persistentMenuReducer,
     getStartedButton: state.getStartedReducer,
     greetingText: state.greetingTextReducer,
+    location: state.routerReducer.location
   };
 };
 

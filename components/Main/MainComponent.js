@@ -9,6 +9,8 @@
  */
 
 import React from 'react';
+import ReactDOM from 'react-dom';
+import {Route} from 'react-router';
 import PersistentMenuContainer from '../PersistentMenu/PersistentMenuContainer';
 import GetStartedContainer from '../GetStarted/GetStartedContainer';
 import GreetingTextContainer from '../GreetingText/GreetingTextContainer';
@@ -80,13 +82,17 @@ class MainComponent extends React.Component {
         <div>
           <div className="mdl-tabs mdl-js-tabs mdl-js-ripple-effect">
             <div className="mdl-tabs__tab-bar">
-              <a href="#get-started" className="mdl-tabs__tab is-active" onClick={event => this.switchTab(event, 'getStarted')}>Get started</a>
-              <a href="#persistent-menu" className="mdl-tabs__tab" onClick={event => this.switchTab(event, 'persistentMenu')}>Persistent menu</a>
+              <a href="#get-started"
+                 className={`mdl-tabs__tab ${this.props.location.pathname === '/main/get-started' ? 'is-active' : ''}`}
+                 onClick={event => this.switchTab(event, 'get-started')}>Get started</a>
+              <a href="#persistent-menu"
+                 className={`mdl-tabs__tab ${this.props.location.pathname === '/main/persistent-menu' ? 'is-active' : ''}`}
+                 onClick={event => this.switchTab(event, 'persistent-menu')}>Persistent menu</a>
             </div>
           </div>
         </div>
         {
-          this.props.currentTab === 'persistentMenu' ?
+          this.props.location.pathname === '/main/persistent-menu' ?
             <div>
               <button onClick={event => this.sendPersistentMenuRequest(event)} disabled={!this.props.main.accessToken}>
                 Send persistent menu request
@@ -94,9 +100,10 @@ class MainComponent extends React.Component {
               <PersistentMenuContainer/>
             </div>
             :
-            this.props.currentTab === 'getStarted' ?
+            this.props.location.pathname === '/main/get-started' ?
               <div>
-                <button onClick={event => this.sendGetStartedButtonRequest(event)} disabled={!this.props.main.accessToken}>
+                <button onClick={event => this.sendGetStartedButtonRequest(event)}
+                        disabled={!this.props.main.accessToken}>
                   Send get started button request
                 </button>
                 <button onClick={event => this.sendGreetingTextRequest(event)} disabled={!this.props.main.accessToken}>
