@@ -10,11 +10,10 @@ class GetStartedComponent extends React.Component {
   render() {
     return (
       <div>
-        This is the GetStartedComponent
-        <code>{JSON.stringify(this.props)}</code>
-        <div>
-          <label htmlFor="get-started-payload">Get started button payload</label>
-          <textarea type="text" id="get-started-payload" onChange={event => this.editPayload(event)}/>
+        <div className="mdl-textfield mdl-js-textfield">
+          <label className="mdl-textfield__label" htmlFor="get-started-payload">Get started button payload</label>
+          <textarea className="mdl-textfield__input" type="text" id="get-started-payload"
+                    onChange={event => this.editPayload(event)}/>
         </div>
       </div>
     )

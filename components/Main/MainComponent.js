@@ -93,28 +93,34 @@ class MainComponent extends React.Component {
           </div>
         </div>
         {
-          this.props.location.pathname === '/main/persistent-menu' ?
-            <div>
-              <button onClick={event => this.sendPersistentMenuRequest(event)} disabled={!this.props.main.accessToken}>
-                Send persistent menu request
-              </button>
-              <PersistentMenuContainer/>
-            </div>
-            :
-            this.props.location.pathname === '/main/get-started' ?
-              <div>
-                <button onClick={event => this.sendGetStartedButtonRequest(event)}
+          this.props.location.pathname === '/main/persistent-menu' &&
+          <div>
+            <button className="mdl-button mdl-js-button" onClick={event => this.sendPersistentMenuRequest(event)}
+                    disabled={!this.props.main.accessToken}>
+              Send persistent menu request
+            </button>
+            <PersistentMenuContainer/>
+          </div>
+          ||
+          this.props.location.pathname === '/main/get-started' &&
+          <div>
+            <div className="mdl-grid" style={{justifyContent: 'space-between'}}>
+              <div className="mdl-cell mdl-cell--4-col-tablet">
+                <button className="mdl-button mdl-js-button" onClick={event => this.sendGetStartedButtonRequest(event)}
                         disabled={!this.props.main.accessToken}>
                   Send get started button request
                 </button>
-                <button onClick={event => this.sendGreetingTextRequest(event)} disabled={!this.props.main.accessToken}>
+                <GetStartedContainer/>
+              </div>
+              <div className="mdl-cell mdl-cell--4-col-tablet">
+                <button className="mdl-button mdl-js-button" onClick={event => this.sendGreetingTextRequest(event)}
+                        disabled={!this.props.main.accessToken}>
                   Send greeting text request
                 </button>
-                <GetStartedContainer/>
                 <GreetingTextContainer/>
               </div>
-              :
-              ''
+            </div>
+          </div>
         }
       </div>
     )
