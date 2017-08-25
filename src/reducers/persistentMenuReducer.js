@@ -52,9 +52,9 @@ export const getInitialPersistentMenu = () => {
   });
 
   const initialSubMenuItems = [
-    new MenuItem('Pay Bill', initialRootMenu, {type: 'postback', payload: 'PAYBILL_PAYLOAD'}),
-    new MenuItem('History', initialRootMenu, {type: 'postback', payload: 'HISTORY_PAYLOAD'}),
-    new MenuItem('Contact Info', initialRootMenu, {type: 'postback', payload: 'CONTACT_INFO_PAYLOAD'}),
+    new MenuItem('Pay Bill', initialSubMenu, {type: 'postback', payload: 'PAYBILL_PAYLOAD'}),
+    new MenuItem('History', initialSubMenu, {type: 'postback', payload: 'HISTORY_PAYLOAD'}),
+    new MenuItem('Contact Info', initialSubMenu, {type: 'postback', payload: 'CONTACT_INFO_PAYLOAD'}),
   ];
 
   initialSubMenuItems.forEach(subMenuItem => {
