@@ -59,7 +59,6 @@ class ExpandedSubMenuComponent extends React.Component {
   }
 
   handleKeyDown(event) {
-    console.log(event);
     if ((event.key === 'Escape' || event.keyCode === 27) && this.addMenuItemFormWrapperRef && !this.addMenuItemFormWrapperRef.contains(event.target)) {
       this.closeAddMenuItemForm();
     }
@@ -111,12 +110,14 @@ class ExpandedSubMenuComponent extends React.Component {
           this.props.isEditingSubMenu && this.state.showAddMenuItemForm && _.includes(Object.keys(this.props.subMenu.children), this.props.isEditingSubMenu) ?
             <div
               ref={wrapper => this.setAddMenuItemFormWrapperRef(wrapper)}
+              className="mdl-shadow--4dp"
               style={{
                 position: 'fixed',
                 left: this.state.addMenuItemFormXPos,
                 top: this.state.addMenuItemFormYPos,
                 border: '1px gray solid',
-                padding: '5px',
+                borderRadius: '5px',
+                padding: '10px',
                 background: 'white'
               }}
             >

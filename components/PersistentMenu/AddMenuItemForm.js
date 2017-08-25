@@ -41,54 +41,72 @@ class AddMenuItemForm extends React.Component {
     this.props.editWebUrl(event.target.value, this.props.menuItem.id);
   }
 
+  componentDidMount() {
+    componentHandler.upgradeDom();
+  };
+
+  componentDidUpdate() {
+    componentHandler.upgradeDom();
+  };
+
   render() {
     return (
       <div>
-        <p>This is the AddMenuItemForm component</p>
-        <code>
-          {/*JSON.stringify(this.props.menuItem)*/}
-        </code>
-        <form onSubmit={event => this.submitForm(event)}>
-          <div>
-            <button
-              onClick={event => this.clickItemType(event, 'postback')}
-              disabled={this.props.menuItem.type === 'postback'}
-            >
+        <div className="mdl-tabs mdl-js-tabs mdl-js-ripple-effect">
+          <div className="mdl-tabs__tab-bar">
+            <a href="#"
+               className={`mdl-tabs__tab ${this.props.menuItem.type === 'postback' ? 'is-active' : ''}`}
+               onClick={event => this.clickItemType(event, 'postback')}>
               Postback
-            </button>
-            <button
-              onClick={event => this.clickItemType(event, 'web_url')}
-              disabled={this.props.menuItem.type === 'web_url'}
-            >
+            </a>
+            <a href="#"
+               className={`mdl-tabs__tab ${this.props.menuItem.type === 'web_url' ? 'is-active' : ''}`}
+               onClick={event => this.clickItemType(event, 'web_url')}>
               Url
-            </button>
-            <button
-              onClick={event => this.clickItemType(event, 'nested')}
-              disabled={this.props.menuItem.type === 'nested'}
-            >
-              Menu
-            </button>
+            </a>
+            {
+              this.props.menuItem.level < 3 &&
+              <a href="#"
+                 className={`mdl-tabs__tab ${this.props.menuItem.type === 'nested' ? 'is-active' : ''}`}
+                 onClick={event => this.clickItemType(event, 'nested')}>
+                Menu
+              </a>
+            }
           </div>
-          <input type="text" onChange={event => this.editTitle(event)} value={this.props.menuItem.title} maxLength={30} autoFocus/>
+        </div>
+        <form onSubmit={event => this.submitForm(event)} style={{display: 'flex', flexFlow: 'column'}}>
+          <div className="mdl-textfield mdl-js-textfield">
+            <label htmlFor="menu-item-title" className="mdl-textfield__label">Title</label>
+            <input type="text"
+                   id="menu-item-title"
+                   className="mdl-textfield__input"
+                   onChange={event => this.editTitle(event)}
+                   value={this.props.menuItem.title}
+                   maxLength={30}
+                   autoFocus/>
+          </div>
           {
             this.props.menuItem.type === 'web_url' ?
               (
-                <div>
+                <div className="mdl-textfield mdl-js-textfield">
+                  <label htmlFor="web_url" className="mdl-textfield__label">{'http://example.com'}</label>
                   <input
+                    className="mdl-textfield__input"
                     type="url"
                     id="web-url"
                     value={this.props.menuItem.url}
-                    placeholder="https://inneklemtedager.no"
                     onChange={event => this.editWebUrl(event)}
                   />
                 </div>
               )
               : this.props.menuItem.type === 'postback' ?
               (
-                <div>
+                <div className="mdl-textfield mdl-js-textfield">
+                  <label htmlFor="payload" className="mdl-textfield__label">{'PAYLOAD'}</label>
                   <textarea
                     type="text"
                     id="payload"
+                    className="mdl-textfield__input"
                     value={this.props.menuItem.payload}
                     placeholder="PAYLOAD"
                     onChange={event => this.editPayload(event)}
@@ -96,7 +114,8 @@ class AddMenuItemForm extends React.Component {
                 </div>
               )
               : this.props.menuItem.type === 'nested' ?
-              <button onClick={event => this.clickEditMenu(event)}>Edit menu</button>
+              <button className="mdl-button mdl-js-button" onClick={event => this.clickEditMenu(event)}>Edit
+                menu</button>
               :
               ''
           }
