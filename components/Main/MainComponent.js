@@ -76,7 +76,8 @@ class MainComponent extends React.Component {
           </p>
           <form onSubmit={event => event.preventDefault()}>
             <label htmlFor="access-token">Your access token</label>
-            <input type="text" id="access-token" onChange={event => this.accessTokenChange(event)}/>
+            <input type="text" id="access-token" value={this.props.main.accessToken}
+                   onChange={event => this.accessTokenChange(event)}/>
           </form>
         </div>
         <div>
