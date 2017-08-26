@@ -1,5 +1,6 @@
 import React from 'react'
 import PayloadInput from '../Util/PayloadInput';
+import InputLengthChip from '../Util/InputLengthChip';
 class AddMenuItemForm extends React.Component {
 
   editTitle(event) {
@@ -83,6 +84,7 @@ class AddMenuItemForm extends React.Component {
                    value={this.props.menuItem.title}
                    maxLength={30}
                    autoFocus/>
+            <InputLengthChip maxLength={30} inputText={this.props.menuItem.title}/>
           </div>
           {
             this.props.menuItem.type === 'web_url' ?
