@@ -1,3 +1,3 @@
 ---
-title: Messenger Menu Helper
+title: Messenger Bot Config Tool
 ---

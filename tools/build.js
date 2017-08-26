@@ -28,6 +28,7 @@ const html = task('html', () => {
 });
 
 // Generate sitemap.xml
+/* Disabled because we deleted the routes.json file
 const sitemap = task('sitemap', () => {
   const urls = require('../src/routes.json')
     .filter(x => !x.path.includes(':'))
@@ -37,7 +38,7 @@ const sitemap = task('sitemap', () => {
   const output = render({ config, urls });
   fs.writeFileSync('public/sitemap.xml', output, 'utf8');
 });
-
+*/
 // Bundle JavaScript, CSS and image files with Webpack
 const bundle = task('bundle', () => {
   const webpackConfig = require('./webpack.config');

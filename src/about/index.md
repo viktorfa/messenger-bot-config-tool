@@ -1,5 +1,5 @@
 ---
-title: About Us
+title: Messenger Bot Config Tool | About
 ---
 
 ## Cadme comitum fecere
