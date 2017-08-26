@@ -1,4 +1,5 @@
 import React from "react";
+import PayloadInput from '../Util/PayloadInput';
 
 class GetStartedComponent extends React.Component {
 
@@ -7,15 +8,17 @@ class GetStartedComponent extends React.Component {
     this.props.editPayload(event.target.value);
   }
 
+  componentDidMount() {
+    componentHandler.upgradeDom();
+  };
+
+  componentDidUpdate() {
+    componentHandler.upgradeDom();
+  };
+
   render() {
     return (
-      <div>
-        <div className="mdl-textfield mdl-js-textfield">
-          <label className="mdl-textfield__label" htmlFor="get-started-payload">Get started button payload</label>
-          <textarea className="mdl-textfield__input" type="text" id="get-started-payload"
-                    onChange={event => this.editPayload(event)}/>
-        </div>
-      </div>
+      <PayloadInput payload={this.props.getStartedButton.payload} editPayload={this.editPayload.bind(this)}/>
     )
   }
 }

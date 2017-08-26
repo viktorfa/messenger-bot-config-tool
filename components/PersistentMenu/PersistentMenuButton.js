@@ -33,12 +33,12 @@ class PersistentMenuButton extends React.Component {
           <span>
             {this.props.menuItem.title || 'Enter title'}
           </span>
-          <span style={{overflow: 'hidden'}}>
+          <span>
             {
               this.props.menuItem.type === 'web_url' &&
               <span className="mdl-chip">
                 <a target="_blank" href={this.props.menuItem.url} className="mdl-chip__text">
-                {this.props.menuItem.url}
+                {this.props.menuItem.url.length < 40 ? this.props.menuItem.url : `${this.props.menuItem.url.substr(0, 37)}...`}
                 </a>
               </span>
               ||

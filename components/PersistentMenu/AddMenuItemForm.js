@@ -1,6 +1,5 @@
 import React from 'react'
-import ExpandedSubMenuComponent from './ExpandedSubMenuComponent';
-
+import PayloadInput from '../Util/PayloadInput';
 class AddMenuItemForm extends React.Component {
 
   editTitle(event) {
@@ -100,19 +99,7 @@ class AddMenuItemForm extends React.Component {
                 </div>
               )
               : this.props.menuItem.type === 'postback' ?
-              (
-                <div className="mdl-textfield mdl-js-textfield">
-                  <label htmlFor="payload" className="mdl-textfield__label">{'PAYLOAD'}</label>
-                  <textarea
-                    type="text"
-                    id="payload"
-                    className="mdl-textfield__input"
-                    value={this.props.menuItem.payload}
-                    placeholder="PAYLOAD"
-                    onChange={event => this.editPayload(event)}
-                  />
-                </div>
-              )
+              <PayloadInput payload={this.props.menuItem.payload} editPayload={this.editPayload.bind(this)}/>
               : this.props.menuItem.type === 'nested' ?
               <button className="mdl-button mdl-js-button" onClick={event => this.clickEditMenu(event)}>Edit
                 menu</button>

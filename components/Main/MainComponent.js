@@ -9,8 +9,6 @@
  */
 
 import React from 'react';
-import ReactDOM from 'react-dom';
-import {Route} from 'react-router';
 import PersistentMenuContainer from '../PersistentMenu/PersistentMenuContainer';
 import GetStartedContainer from '../GetStarted/GetStartedContainer';
 import GreetingTextContainer from '../GreetingText/GreetingTextContainer';
@@ -64,20 +62,21 @@ class MainComponent extends React.Component {
     return (
       <div>
         {
-          this.props.main.loading ?
-            <h4>Loading ...</h4>
-            :
-            ''
+          this.props.main.loading && <h4>Loading ...</h4>
         }
-        <h5>{this.props.main.message}</h5>
+        {
+          this.props.main.message && <h5>{this.props.main.message}</h5>
+        }
         <div>
           <p>
-            Current access token: {this.props.main.accessToken}
+            Current access token: <code style={{maxWidth: '100vw', wordBreak: 'break-all'}}>{this.props.main.accessToken}</code>
           </p>
           <form onSubmit={event => event.preventDefault()}>
-            <label htmlFor="access-token">Your access token</label>
-            <input type="text" id="access-token" value={this.props.main.accessToken}
-                   onChange={event => this.accessTokenChange(event)}/>
+            <div className="mdl-textfield mdl-js-textfield">
+              <label htmlFor="access-token" className="mdl-textfield__label">Your access token</label>
+              <input type="text" id="access-token" className="mdl-textfield__input" value={this.props.main.accessToken}
+                     onChange={event => this.accessTokenChange(event)}/>
+            </div>
           </form>
         </div>
         <div>

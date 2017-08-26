@@ -1,4 +1,5 @@
 import React from "react";
+import InputLengthChip from '../Util/InputLengthChip';
 
 class GreetingTextComponent extends React.Component {
 
@@ -11,9 +12,7 @@ class GreetingTextComponent extends React.Component {
     return (
       <div>
         <div className="mdl-textfield mdl-js-textfield">
-          <span className="mdl-chip" style={{position: 'absolute', right: 0, top: 0, zIndex: '-1'}}>
-            <span className="mdl-chip__text">{160 - this.props.greetingText.text.length}</span>
-          </span>
+          <InputLengthChip maxLength={160} inputText={this.props.greetingText.text}/>
           <label className="mdl-textfield__label" htmlFor="greeting-text-text">Greeting text</label>
           <textarea className="mdl-textfield__input"
                     type="text"

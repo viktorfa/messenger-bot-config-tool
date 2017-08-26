@@ -1,16 +1,26 @@
+import Payload from './Payload';
+
 class GetStartedButton {
-  constructor() {
-    this.payload = '';
+  constructor(payloadText) {
+    this.payload = new Payload(payloadText || '', 1000);
   }
 
   setPayload(payload) {
-    this.payload = payload;
+    this.payload.setText(payload);
+  }
+
+  getPayloadText() {
+    return this.payload.getText();
+  }
+
+  validate() {
+    return this.payload.validate();
   }
 
   createBodyForRequest() {
     return {
       get_started: {
-        payload: this.payload
+        payload: this.payload.getText()
       }
     }
   }

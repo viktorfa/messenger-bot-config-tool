@@ -1,5 +1,6 @@
 import _ from 'lodash';
 import CallToAction from "./CallToAction";
+import Payload from "./Payload";
 
 class MenuItem extends CallToAction {
   constructor(title, parent, config) {
@@ -10,7 +11,7 @@ class MenuItem extends CallToAction {
     this.call_to_actions = [];
     this.url = config.url || 'http://example.com';
     this.webview_height_ratio = config.webview_height_ratio || 'full';
-    this.payload = config.payload || 'PAYLOAD'
+    this.payload = new Payload(config.payload || '', 1000)
   }
 
   addChild(menuItem) {
@@ -43,7 +44,7 @@ class MenuItem extends CallToAction {
           return {
             type: menuItem.type,
             title: menuItem.title,
-            payload: menuItem.payload
+            payload: menuItem.payload.getText()
           };
         case 'nested':
           return {
@@ -58,7 +59,7 @@ class MenuItem extends CallToAction {
   }
 
   setPayload(payload) {
-    this.payload = payload;
+    this.payload.setText(payload);
   }
 
   setUrl(url) {
