@@ -13,6 +13,7 @@ import {isBoolean} from 'lodash';
 import PersistentMenuContainer from '../PersistentMenu/PersistentMenuContainer';
 import GetStartedContainer from '../GetStarted/GetStartedContainer';
 import GreetingTextContainer from '../GreetingText/GreetingTextContainer';
+import MessageComponent from '../Util/MessageComponent';
 
 class MainComponent extends React.Component {
   constructor(props) {
@@ -68,10 +69,15 @@ class MainComponent extends React.Component {
     return (
       <div>
         {
-          this.props.main.loading && <h4>Loading ...</h4>
+          this.props.main.loading &&
+          <div style={{display: 'flex', justifyContent: 'center', position: 'fixed', left: '0'}}>
+            <div className="mdl-progress mdl-js-progress mdl-progress__indeterminate" style={{width: '100vw'}}>
+            </div>
+          </div>
         }
         {
-          this.props.main.message && <h5>{this.props.main.message}</h5>
+          this.props.main.message &&
+          <MessageComponent timeout={2000} messageText={this.props.main.message} messageId={this.props.main.messageId}/>
         }
 
         <div>

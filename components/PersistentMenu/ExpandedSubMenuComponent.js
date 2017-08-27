@@ -71,9 +71,6 @@ class ExpandedSubMenuComponent extends React.Component {
   render() {
     return (
       <div>
-        <p>This is the ExpandedSubMenuComponent</p>
-        <code>
-        </code>
         <div className={`${s['persistent-menu-buttons']}`}>
           <div className={`${s['persistent-menu-button']} ${s['persistent-menu-header']}`}>
             {
