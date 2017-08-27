@@ -9,6 +9,7 @@
  */
 
 import React from 'react';
+import {isBoolean} from 'lodash';
 import PersistentMenuContainer from '../PersistentMenu/PersistentMenuContainer';
 import GetStartedContainer from '../GetStarted/GetStartedContainer';
 import GreetingTextContainer from '../GreetingText/GreetingTextContainer';
@@ -50,6 +51,11 @@ class MainComponent extends React.Component {
     this.props.switchTab(tabName);
   }
 
+  clickValidateToken(event) {
+    event.preventDefault();
+    this.props.loadCurrentBotConfig(this.props.main.accessToken, 'Access token is valid :)');
+  }
+
   componentDidMount() {
     componentHandler.upgradeDom();
   };
@@ -67,17 +73,34 @@ class MainComponent extends React.Component {
         {
           this.props.main.message && <h5>{this.props.main.message}</h5>
         }
+
         <div>
-          <p>
-            Current access token: <code style={{maxWidth: '100vw', wordBreak: 'break-all'}}>{this.props.main.accessToken}</code>
-          </p>
           <form onSubmit={event => event.preventDefault()}>
-            <div className="mdl-textfield mdl-js-textfield">
+            <div className="mdl-textfield mdl-js-textfield" style={{width: '100%'}}>
               <label htmlFor="access-token" className="mdl-textfield__label">Your access token</label>
               <input type="text" id="access-token" className="mdl-textfield__input" value={this.props.main.accessToken}
                      onChange={event => this.accessTokenChange(event)}/>
             </div>
           </form>
+          <button className="mdl-button mdl-js-button"
+                  onClick={event => this.clickValidateToken(event)}
+                  disabled={this.props.main.accessTokenIsValid || !this.props.main.accessToken}>
+            Validate token
+          </button>
+          { this.props.main.accessTokenIsValid === true &&
+          <span className="mdl-chip mdl-color--green-300">
+            <span className="mdl-chip__text">Access token is valid</span>
+          </span>
+          ||
+          isBoolean(this.props.main.accessTokenIsValid) && this.props.main.accessTokenIsValid === false &&
+          <span className="mdl-chip mdl-color--red-300">
+            <span className="mdl-chip__text">Access token is not valid</span>
+          </span>
+          ||
+          <span className="mdl-chip mdl-color--orange-300">
+            <span className="mdl-chip__text">Access token is not validated</span>
+          </span>
+          }
         </div>
         <div>
           <div className="mdl-tabs mdl-js-tabs mdl-js-ripple-effect">

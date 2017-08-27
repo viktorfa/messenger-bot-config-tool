@@ -28,21 +28,51 @@ const sendFacebookPostRequest = (accessToken, body, successMessage) => {
         return response.json();
       }
       throw "Something wrong with the request";
-    }).then(response => {
-      console.log(response);
+    }).then(json => {
+      console.log(json);
       return dispatch({type: 'SEND_FACEBOOK_HTTP_REQUEST_FINISH', message: successMessage})
     }).catch(error => {
       console.log(error);
       return dispatch({type: 'SEND_FACEBOOK_HTTP_REQUEST_FINISH', message: 'Something went wrong'});
     });
     return dispatch({type: 'START_SEND_FACEBOOK_HTTP_REQUEST'});
-  }
+  };
 };
 
 const switchTab = (tabName) => {
   return dispatch => {
     dispatch(push(`/main/${tabName}`));
   }
+};
+
+const loadCurrentBotConfig = (accessToken, successMessage) => {
+  return dispatch => {
+    fetch(`https://graph.facebook.com/v2.6/me/messenger_profile?fields=get_started,persistent_menu,greeting&access_token=${accessToken}`)
+      .then(response => {
+        if (response.ok) {
+          return response.json();
+        }
+        throw "Something wrong with the request";
+      })
+      .then(json => {
+        console.log(json);
+        const config = json.data[0];
+        dispatch({type: 'SEND_FACEBOOK_HTTP_REQUEST_FINISH', message: successMessage || 'Loaded successfully'});
+        dispatch({
+          type: 'SET_CURRENT_BOT_CONFIG_STATE',
+          message: successMessage || 'Loaded successfully',
+          persistentMenu: config.persistent_menu,
+          getStarted: config.get_started,
+          greeting: config.greeting,
+        });
+      })
+      .catch(error => {
+        console.log(error);
+        dispatch({type: 'SEND_FACEBOOK_HTTP_REQUEST_FINISH', message: 'Something went wrong'});
+        dispatch({type: 'SET_ACCESS_TOKEN_INVALID'});
+      });
+    return dispatch({type: 'START_SEND_FACEBOOK_HTTP_REQUEST'});
+  };
 };
 
 const mapStateToProps = (state) => {
@@ -61,6 +91,7 @@ const mapDispatchToProps = (dispatch) => {
     setAccessToken: (accessToken) => dispatch(setAccessToken(accessToken)),
     sendFacebookPostRequest: (accessToken, body, successMessage) => dispatch(sendFacebookPostRequest(accessToken, body, successMessage)),
     switchTab: (tabName) => dispatch(switchTab(tabName)),
+    loadCurrentBotConfig: (accessToken, successMessage) => dispatch(loadCurrentBotConfig(accessToken, successMessage)),
   };
 };
 
