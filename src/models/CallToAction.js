@@ -1,13 +1,27 @@
-import SubMenuItem from './SubMenuItem';
+import _ from 'lodash';
 
-class CallToAction extends SubMenuItem {
+class CallToAction {
   constructor(type, title, parent, id) {
-    super(parent, title, id);
     this.type = type;
+    this.title = title;
+    this.parent = parent;
+    this.id = id;
   }
 
   setType(type) {
     this.type = type;
+  }
+
+  setTitle(title) {
+    this.title = title;
+  }
+
+  getRoot() {
+    if (_.isNull(this.parent)) {
+      return this;
+    } else {
+      return this.parent;
+    }
   }
 }
 

@@ -1,15 +1,7 @@
-/**
- * React Static Boilerplate
- * https://github.com/kriasoft/react-static-boilerplate
- *
- * Copyright © 2015-present Kriasoft, LLC. All rights reserved.
- *
- * This source code is licensed under the MIT license found in the
- * LICENSE.txt file in the root directory of this source tree.
- */
-
-import { expect } from 'chai';
+import {expect} from 'chai';
+import _ from 'lodash';
 import {getInitialPersistentMenu} from '../src/reducers/persistentMenuReducer';
+import PersistentMenu from '../src/models/PersistentMenu';
 
 describe('Persistent Menu', () => {
   let persistentMenu;
@@ -24,4 +16,44 @@ describe('Persistent Menu', () => {
     console.log(actualAsJson);
   });
 
+  it('should be able to construct a PersistentMenu object from an object as it in represented from Facebook', () => {
+    const originalObject = _.cloneDeep(persistentMenuObject);
+    const actual = PersistentMenu.constructFromPrevious(originalObject);
+    expect(Object.keys(actual.menuItems).length).to.equal(6);
+  });
+
 });
+
+const persistentMenuObject = {
+  locale: "default",
+  composer_input_disabled: true,
+  call_to_actions: [
+    {
+      title: "My Account",
+      type: "nested",
+      call_to_actions: [
+        {
+          title: "Pay Bill",
+          type: "postback",
+          payload: "PAYBILL_PAYLOAD"
+        },
+        {
+          title: "History",
+          type: "postback",
+          payload: "HISTORY_PAYLOAD"
+        },
+        {
+          title: "Contact Info",
+          type: "postback",
+          payload: "CONTACT_INFO_PAYLOAD"
+        }
+      ]
+    },
+    {
+      type: "web_url",
+      title: "Latest News",
+      url: "http://petershats.parseapp.com/hat-news",
+      webview_height_ratio: "full"
+    }
+  ]
+};

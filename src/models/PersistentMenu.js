@@ -1,10 +1,9 @@
 import MenuItem from './MenuItem';
 
 class PersistentMenu {
-  constructor() {
-    this.locale = 'default';
-    this.composer_input_disabled = true;
-    this.call_to_actions = [];
+  constructor(locale, composerInputDisabled) {
+    this.locale = locale || 'default';
+    this.composer_input_disabled = composerInputDisabled || true;
     const rootMenu = new MenuItem('root', {id: 'root', level: -1}, {type: 'nested'});
     rootMenu.id = 'root';
     this.menuItems = {root: rootMenu};
@@ -12,7 +11,11 @@ class PersistentMenu {
   }
 
   static constructFromPrevious(previous) {
-
+    const result = new PersistentMenu(previous.locale, previous.composer_input_disabled);
+    previous.call_to_actions.forEach(callToAction => {
+      result.addMenuItem(MenuItem.constructFromPrevious(callToAction, result.getMenuItem('root')), 'root');
+    });
+    return result;
   }
 
   createBodyForRequest() {
