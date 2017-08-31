@@ -27,11 +27,19 @@ class PayloadInput extends React.Component {
         </div>
         <div style={{marginTop: '-20px'}}>
           {
+            !this.props.payload.validate() &&
+            <span className="mdl-chip mdl-color--red-300"><span
+              className="mdl-chip__text">Payload is not valid</span>
+            </span>
+            ||
             this.props.payload.isParseable() &&
             <span className="mdl-chip mdl-color--green-300"><span
-              className="mdl-chip__text">Payload is JSON parseable</span></span>
+              className="mdl-chip__text">Payload is JSON parseable</span>
+            </span>
             ||
-            <span className="mdl-chip mdl-color--orange-300"><span className="mdl-chip__text">Payload is not JSON parseable</span></span>
+            <span className="mdl-chip mdl-color--orange-300">
+              <span className="mdl-chip__text">Payload is not JSON parseable</span>
+            </span>
           }
         </div>
       </div>
