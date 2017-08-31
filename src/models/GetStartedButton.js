@@ -17,6 +17,10 @@ class GetStartedButton {
     return this.payload.validate();
   }
 
+  static constructFromPrevious(previous) {
+    return new GetStartedButton(previous.payload);
+  }
+
   createBodyForRequest() {
     return {
       get_started: {

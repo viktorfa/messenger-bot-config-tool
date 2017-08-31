@@ -26,10 +26,27 @@ class MessageComponent extends React.Component {
     this.setState({isVisible: false})
   }
 
+  getColorClassName() {
+    switch (this.props.messageStatus) {
+      case 'success':
+        return 'mdl-color--green-300';
+      case 'error':
+        return 'mdl-color--red-300';
+      default:
+        return 'mdl-color--grey-300';
+    }
+  }
+
   render() {
     if (this.state.isVisible) {
       return (
-        <div style={{position: 'fixed', background: 'lightgray', zIndex: '10', textAlign: 'center', width: '100vw', left: 0}}>
+        <div className={this.getColorClassName()} style={{
+          position: 'fixed',
+          zIndex: '10',
+          textAlign: 'center',
+          width: '100vw',
+          left: 0
+        }}>
           <h4>{this.props.messageText}</h4>
         </div>
       )
@@ -43,6 +60,7 @@ MessageComponent.propTypes = {
   timeout: PropTypes.number.isRequired,
   messageText: PropTypes.string.isRequired,
   messageId: PropTypes.number.isRequired,
+  messageStatus: PropTypes.string,
 };
 
 export default MessageComponent;

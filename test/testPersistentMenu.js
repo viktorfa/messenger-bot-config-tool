@@ -20,6 +20,7 @@ describe('Persistent Menu', () => {
     const originalObject = _.cloneDeep(persistentMenuObject);
     const actual = PersistentMenu.constructFromPrevious(originalObject);
     expect(Object.keys(actual.menuItems).length).to.equal(6);
+    expect(_.find(actual.menuItems, menuItem => menuItem.title === 'Contact Info'))
   });
 
 });

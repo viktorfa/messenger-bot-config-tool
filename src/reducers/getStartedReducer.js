@@ -14,6 +14,8 @@ const getStartedReducer = (state = {getStartedButton: getInitialGetStartedButton
       newGetStartedButton = cloneDeep(state.getStartedButton);
       newGetStartedButton.setPayload(action.payload);
       return {...state, getStartedButton: newGetStartedButton};
+    case 'SET_GET_STARTED_BUTTON':
+      return {...state, getStartedButton: action.getStartedButton};
     default:
       return state;
   }

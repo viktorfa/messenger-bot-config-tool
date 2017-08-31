@@ -12,8 +12,9 @@ class PersistentMenu {
 
   static constructFromPrevious(previous) {
     const result = new PersistentMenu(previous.locale, previous.composer_input_disabled);
+    let newMenuItem;
     previous.call_to_actions.forEach(callToAction => {
-      result.addMenuItem(MenuItem.constructFromPrevious(callToAction, result.getMenuItem('root')), 'root');
+      newMenuItem = MenuItem.constructFromPreviousAndAddToMenu(callToAction, result.getMenuItem('root'), result);
     });
     return result;
   }

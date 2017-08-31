@@ -14,22 +14,24 @@ class MenuItem extends CallToAction {
     this.payload = new Payload(config.payload || '', 1000)
   }
 
-  static constructFromPrevious(previous, parent, persistentMenu) {
+  static constructFromPreviousAndAddToMenu(previous, parent, persistentMenu) {
     switch (previous.type) {
       case 'web_url':
-        return new MenuItem(previous.title, parent, {
+        persistentMenu.addMenuItem(new MenuItem(previous.title, parent, {
           type: 'web_url',
           webview_height_ratio: previous.webview_height_ratio,
           url: previous.url
-        });
+        }), parent.id);
+        break;
       case 'postback':
-        return new MenuItem(previous.title, parent, {payload: previous.payload});
+        persistentMenu.addMenuItem(new MenuItem(previous.title, parent, {payload: previous.payload, type: 'postback'}), parent.id);
+        break;
       case 'nested':
-        const subMenu = new MenuItem(previous.title, parent, {});
+        const subMenu = persistentMenu.addMenuItem(new MenuItem(previous.title, parent, {type: 'nested'}), parent.id);
         previous.call_to_actions.forEach(callToAction => {
-          persistentMenu.addMenuItem(MenuItem.constructFromPrevious(callToAction, subMenu, persistentMenu));
+          MenuItem.constructFromPreviousAndAddToMenu(callToAction, subMenu, persistentMenu);
         });
-        return subMenu;
+        break;
       default:
         throw "Received unknown call to action."
     }

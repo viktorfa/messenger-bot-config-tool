@@ -1,22 +1,23 @@
-/**
- * React Static Boilerplate
- * https://github.com/kriasoft/react-static-boilerplate
- *
- * Copyright © 2015-present Kriasoft, LLC. All rights reserved.
- *
- * This source code is licensed under the MIT license found in the
- * LICENSE.txt file in the root directory of this source tree.
- */
-
 import React from 'react';
 import {connect} from 'react-redux';
-import MainComponent from './MainComponent';
 import {push} from "react-router-redux";
+import MainComponent from './MainComponent';
+import PersistentMenu from '../../src/models/PersistentMenu';
+import GreetingText from '../../src/models/GreetingText';
+import GetStartedButton from '../../src/models/GetStartedButton';
 
 const setAccessToken = (accessToken) => {
   return {type: 'SET_ACCESS_TOKEN', accessToken};
 };
 
+/**
+ * Sends a request to the Facebook API to change the bot config so that the live Messenger bot changes. Updates the
+ * state to reflect the status of the response.
+ * @param accessToken
+ * @param body
+ * @param successMessage
+ * @returns {function(*)}
+ */
 const sendFacebookPostRequest = (accessToken, body, successMessage) => {
   return (dispatch) => {
     fetch(`https://graph.facebook.com/v2.6/me/messenger_profile?access_token=${accessToken}`, {
@@ -30,10 +31,14 @@ const sendFacebookPostRequest = (accessToken, body, successMessage) => {
       throw "Something wrong with the request";
     }).then(json => {
       console.log(json);
-      return dispatch({type: 'SEND_FACEBOOK_HTTP_REQUEST_FINISH', message: successMessage})
+      return dispatch({type: 'SEND_FACEBOOK_HTTP_REQUEST_FINISH', message: successMessage, messageStatus: 'success'})
     }).catch(error => {
       console.log(error);
-      return dispatch({type: 'SEND_FACEBOOK_HTTP_REQUEST_FINISH', message: 'Something went wrong'});
+      return dispatch({
+        type: 'SEND_FACEBOOK_HTTP_REQUEST_FINISH',
+        message: 'Something went wrong',
+        messageStatus: 'error'
+      });
     });
     return dispatch({type: 'START_SEND_FACEBOOK_HTTP_REQUEST'});
   };
@@ -45,9 +50,14 @@ const switchTab = (tabName) => {
   }
 };
 
-const loadCurrentBotConfig = (accessToken, successMessage) => {
-  return dispatch => {
-    fetch(`https://graph.facebook.com/v2.6/me/messenger_profile?fields=get_started,persistent_menu,greeting&access_token=${accessToken}`)
+/**
+ * Simply fetches the bot config from the Facebook API without changing state.
+ * @param accessToken
+ * @returns {Promise}
+ */
+const fetchCurrentBotConfig = (accessToken) => {
+  return new Promise((resolve, reject) => {
+    return fetch(`https://graph.facebook.com/v2.6/me/messenger_profile?fields=get_started,persistent_menu,greeting&access_token=${accessToken}`)
       .then(response => {
         if (response.ok) {
           return response.json();
@@ -56,22 +66,97 @@ const loadCurrentBotConfig = (accessToken, successMessage) => {
       })
       .then(json => {
         console.log(json);
-        const config = json.data[0];
-        dispatch({type: 'SEND_FACEBOOK_HTTP_REQUEST_FINISH', message: successMessage || 'Loaded successfully'});
-        dispatch({
-          type: 'SET_CURRENT_BOT_CONFIG_STATE',
-          message: successMessage || 'Loaded successfully',
-          persistentMenu: config.persistent_menu,
-          getStarted: config.get_started,
-          greeting: config.greeting,
-        });
+        resolve(json);
       })
       .catch(error => {
         console.log(error);
-        dispatch({type: 'SEND_FACEBOOK_HTTP_REQUEST_FINISH', message: 'Something went wrong'});
-        dispatch({type: 'SET_ACCESS_TOKEN_INVALID'});
+        reject(error);
       });
-    return dispatch({type: 'START_SEND_FACEBOOK_HTTP_REQUEST'});
+  });
+};
+
+/**
+ * Updates the state to contain a bot config. Note that this does not update the config the user is currently editing,
+ * it simply stores/caches it somewhere it is hidden from the UI.
+ * @param config
+ * @returns {{type: string, persistentMenu: Array, getStarted: (get_started|{payload}), greeting: (*|Array)}}
+ */
+const setCurrentBotConfig = (config) => {
+  return {
+    type: 'SET_CURRENT_BOT_CONFIG_STATE',
+    persistentMenu: config.persistent_menu,
+    getStarted: config.get_started,
+    greeting: config.greeting,
+  }
+};
+
+/**
+ * Fetches the latest bot config from the Facebook API and updates the state to reflect whether the access token is
+ * valid or not. Optionally dispatches a callback after the config is loaded.
+ * @param accessToken
+ * @param successMessage
+ * @param callback
+ * @returns {function(*)}
+ */
+const loadCurrentBotConfig = (accessToken, successMessage, callback) => {
+  return dispatch => {
+    dispatch({type: 'START_SEND_FACEBOOK_HTTP_REQUEST'});
+    fetchCurrentBotConfig(accessToken).then(json => {
+      console.log(json);
+      const config = json.data[0];
+      dispatch({
+        type: 'SEND_FACEBOOK_HTTP_REQUEST_FINISH',
+        message: successMessage || 'Loaded successfully',
+        messageStatus: 'success'
+      });
+      dispatch(setCurrentBotConfig(config));
+      if (callback) {
+        dispatch(callback());
+      }
+    }).catch(error => {
+      console.log(error);
+      dispatch({type: 'SEND_FACEBOOK_HTTP_REQUEST_FINISH', message: 'Something went wrong', messageStatus: 'error'});
+      dispatch({type: 'SET_ACCESS_TOKEN_INVALID'});
+    });
+  };
+};
+
+/**
+ * Fetches the latest bot config from the Facebook API and updates the state of the current persistent menu to the one
+ * fetched from Facebook.
+ * @param accessToken
+ * @returns {function(*, *)}
+ */
+const loadCurrentPersistentMenu = (accessToken) => {
+  return (dispatch, getState) => {
+    dispatch(loadCurrentBotConfig(accessToken, 'Persistent menu loaded successfully', () => {
+      return {
+        type: 'SET_PERSISTENT_MENU',
+        persistentMenu: PersistentMenu.constructFromPrevious(getState().mainReducer.currentPersistentMenu[0])
+      }
+    }));
+  };
+};
+
+const loadCurrentGreetingText = (accessToken) => {
+  return (dispatch, getState) => {
+    dispatch(loadCurrentBotConfig(accessToken, 'Greeting text loaded successfully', () => {
+      return {
+        type: 'SET_GREETING_TEXT',
+        greetingText: GreetingText.constructFromPrevious(getState().mainReducer.currentGreeting[0])
+      }
+    }));
+  };
+};
+
+const loadCurrentGetStartedButton = (accessToken) => {
+  return (dispatch, getState) => {
+    dispatch(loadCurrentBotConfig(accessToken, 'Get started button loaded successfully', () => {
+      return {
+        type: 'SET_GET_STARTED_BUTTON',
+        getStartedButton: GetStartedButton.constructFromPrevious(getState().mainReducer.currentGetStarted)
+      }
+    }));
   };
 };
 
@@ -92,6 +177,9 @@ const mapDispatchToProps = (dispatch) => {
     sendFacebookPostRequest: (accessToken, body, successMessage) => dispatch(sendFacebookPostRequest(accessToken, body, successMessage)),
     switchTab: (tabName) => dispatch(switchTab(tabName)),
     loadCurrentBotConfig: (accessToken, successMessage) => dispatch(loadCurrentBotConfig(accessToken, successMessage)),
+    loadCurrentPersistentMenu: (accessToken) => dispatch(loadCurrentPersistentMenu(accessToken)),
+    loadCurrentGreetingText: (accessToken) => dispatch(loadCurrentGreetingText(accessToken)),
+    loadCurrentGetStartedButton: (accessToken) => dispatch(loadCurrentGetStartedButton(accessToken)),
   };
 };
 

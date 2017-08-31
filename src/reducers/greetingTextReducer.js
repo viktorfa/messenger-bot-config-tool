@@ -14,6 +14,8 @@ const greetingTextReducer = (state = {greetingText: getInitialGreetingText(), fo
       newGreetingText = cloneDeep(state.greetingText);
       newGreetingText.setText(action.text);
       return {...state, greetingText: newGreetingText};
+    case 'SET_GREETING_TEXT':
+      return {...state, greetingText: action.greetingText};
     default:
       return state;
   }

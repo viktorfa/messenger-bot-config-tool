@@ -7,7 +7,13 @@ const mainReducer = (state = inititalState, action) => {
     case 'START_SEND_FACEBOOK_HTTP_REQUEST':
       return {...state, loading: true};
     case 'SEND_FACEBOOK_HTTP_REQUEST_FINISH':
-      return {...state, loading: false, message: action.message, messageId: Date.now()};
+      return {
+        ...state,
+        loading: false,
+        message: action.message,
+        messageId: Date.now(),
+        messageStatus: action.messageStatus
+      };
     case 'SET_CURRENT_BOT_CONFIG_STATE':
       return {
         ...state,

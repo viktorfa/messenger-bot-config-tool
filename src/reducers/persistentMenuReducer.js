@@ -80,6 +80,8 @@ const persistentMenuReducer = (state = getInitialState(), action) => {
       } else {
         return state;
       }
+    case 'SET_PERSISTENT_MENU':
+      return {persistentMenu: action.persistentMenu};
     case 'CLICK_ADD_NEW_ITEM':
       newPersistentMenu = cloneDeep(state.persistentMenu);
       newMenuItem = new MenuItem('Title', state.persistentMenu.getMenuItem(action.parentId), {});

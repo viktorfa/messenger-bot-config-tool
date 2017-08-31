@@ -11,8 +11,11 @@
 import React from 'react';
 import {isBoolean} from 'lodash';
 import PersistentMenuContainer from '../PersistentMenu/PersistentMenuContainer';
+import PersistentMenuRequestButtons from '../PersistentMenu/PersistentMenuRequestButtons';
 import GetStartedContainer from '../GetStarted/GetStartedContainer';
+import GetStartedRequestButtons from '../GetStarted/GetStartedRequestButtons';
 import GreetingTextContainer from '../GreetingText/GreetingTextContainer';
+import GreetingTextRequestButtons from '../GreetingText/GreetingTextRequestButtons';
 import MessageComponent from '../Util/MessageComponent';
 
 class MainComponent extends React.Component {
@@ -57,6 +60,21 @@ class MainComponent extends React.Component {
     this.props.loadCurrentBotConfig(this.props.main.accessToken, 'Access token is valid :)');
   }
 
+  loadCurrentPersistentMenu(event) {
+    event.preventDefault();
+    this.props.loadCurrentPersistentMenu(this.props.main.accessToken);
+  }
+
+  loadCurrentGetStartedButton(event) {
+    event.preventDefault();
+    this.props.loadCurrentGetStartedButton(this.props.main.accessToken);
+  }
+
+  loadCurrentGreetingText(event) {
+    event.preventDefault();
+    this.props.loadCurrentGreetingText(this.props.main.accessToken);
+  }
+
   componentDidMount() {
     componentHandler.upgradeDom();
   };
@@ -77,7 +95,11 @@ class MainComponent extends React.Component {
         }
         {
           this.props.main.message &&
-          <MessageComponent timeout={2000} messageText={this.props.main.message} messageId={this.props.main.messageId}/>
+          <MessageComponent timeout={2000}
+                            messageText={this.props.main.message}
+                            messageId={this.props.main.messageId}
+                            messageStatus={this.props.main.messageStatus}
+          />
         }
 
         <div>
@@ -111,6 +133,9 @@ class MainComponent extends React.Component {
         <div>
           <div className="mdl-tabs mdl-js-tabs mdl-js-ripple-effect">
             <div className="mdl-tabs__tab-bar">
+              <a href="#greeting-text"
+                 className={`mdl-tabs__tab ${this.props.location.pathname === '/main/greeting-text' ? 'is-active' : ''}`}
+                 onClick={event => this.switchTab(event, 'greeting-text')}>Greeting text</a>
               <a href="#get-started"
                  className={`mdl-tabs__tab ${this.props.location.pathname === '/main/get-started' ? 'is-active' : ''}`}
                  onClick={event => this.switchTab(event, 'get-started')}>Get started</a>
@@ -121,33 +146,31 @@ class MainComponent extends React.Component {
           </div>
         </div>
         {
-          this.props.location.pathname === '/main/persistent-menu' &&
-          <div>
-            <button className="mdl-button mdl-js-button" onClick={event => this.sendPersistentMenuRequest(event)}
-                    disabled={!this.props.main.accessToken}>
-              Send persistent menu request
-            </button>
-            <PersistentMenuContainer/>
+          this.props.location.pathname === '/main/greeting-text' &&
+          <div style={{display: 'flex', flexFlow: 'column', alignItems: 'center'}}>
+            <GreetingTextRequestButtons disabled={!this.props.main.accessTokenIsValid}
+                                        loadCurrentGreetingText={this.loadCurrentGreetingText.bind(this)}
+                                        sendGreetingTextRequest={this.sendGreetingTextRequest.bind(this)}
+            />
+            <GreetingTextContainer/>
           </div>
           ||
           this.props.location.pathname === '/main/get-started' &&
+          <div style={{display: 'flex', flexFlow: 'column', alignItems: 'center'}}>
+            <GetStartedRequestButtons disabled={!this.props.main.accessTokenIsValid}
+                                      loadCurrentGetStartedButton={this.loadCurrentGetStartedButton.bind(this)}
+                                      sendGetStartedRequest={this.sendGetStartedButtonRequest.bind(this)}
+            />
+            <GetStartedContainer/>
+          </div>
+          ||
+          this.props.location.pathname === '/main/persistent-menu' &&
           <div>
-            <div className="mdl-grid" style={{justifyContent: 'space-between'}}>
-              <div className="mdl-cell mdl-cell--4-col-tablet">
-                <button className="mdl-button mdl-js-button" onClick={event => this.sendGetStartedButtonRequest(event)}
-                        disabled={!this.props.main.accessToken}>
-                  Send get started button request
-                </button>
-                <GetStartedContainer/>
-              </div>
-              <div className="mdl-cell mdl-cell--4-col-tablet">
-                <button className="mdl-button mdl-js-button" onClick={event => this.sendGreetingTextRequest(event)}
-                        disabled={!this.props.main.accessToken}>
-                  Send greeting text request
-                </button>
-                <GreetingTextContainer/>
-              </div>
-            </div>
+            <PersistentMenuRequestButtons disabled={!this.props.main.accessTokenIsValid}
+                                          loadCurrentPersistentMenu={this.loadCurrentPersistentMenu.bind(this)}
+                                          sendPersistentMenuRequest={this.sendPersistentMenuRequest.bind(this)}
+            />
+            <PersistentMenuContainer/>
           </div>
         }
       </div>
