@@ -13,10 +13,11 @@ class ExpandedSubMenuComponent extends React.Component {
 
   clickAddNewMenuItem(event) {
     event.preventDefault();
+    console.log(event.target.parentElement.getBoundingClientRect());
     console.log("Clicked add new menu item");
     this.setState({
-      addMenuItemFormXPos: `${event.clientX}px`,
-      addMenuItemFormYPos: `${event.clientY}px`,
+      addMenuItemFormXPos: `${event.target.parentElement.getBoundingClientRect().left}px`,
+      addMenuItemFormYPos: `${event.target.parentElement.getBoundingClientRect().top}px`,
       showAddMenuItemForm: true
     });
     this.props.clickAddNewItem(this.props.subMenu.id);
@@ -26,8 +27,8 @@ class ExpandedSubMenuComponent extends React.Component {
     event.preventDefault();
     if (event.target.nodeName !== 'BUTTON') {
       this.setState({
-        addMenuItemFormXPos: `${event.clientX}px`,
-        addMenuItemFormYPos: `${event.clientY}px`,
+        addMenuItemFormXPos: `${event.target.parentElement.getBoundingClientRect().left}px`,
+        addMenuItemFormYPos: `${event.target.parentElement.getBoundingClientRect().top}px`,
         showAddMenuItemForm: true
       });
       this.props.clickMenuItem(menuButton.id);
