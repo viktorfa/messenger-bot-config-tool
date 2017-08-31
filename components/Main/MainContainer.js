@@ -20,6 +20,7 @@ const setAccessToken = (accessToken) => {
  */
 const sendFacebookPostRequest = (accessToken, body, successMessage) => {
   return (dispatch) => {
+    dispatch({type: 'START_SEND_FACEBOOK_HTTP_REQUEST'});
     fetch(`https://graph.facebook.com/v2.6/me/messenger_profile?access_token=${accessToken}`, {
       method: 'POST',
       body: JSON.stringify(body),
@@ -40,7 +41,6 @@ const sendFacebookPostRequest = (accessToken, body, successMessage) => {
         messageStatus: 'error'
       });
     });
-    return dispatch({type: 'START_SEND_FACEBOOK_HTTP_REQUEST'});
   };
 };
 
@@ -160,6 +160,39 @@ const loadCurrentGetStartedButton = (accessToken) => {
   };
 };
 
+const sendFacebookDeleteRequest = (accessToken, field, successMessage) => {
+  const body = {
+    fields: [field]
+  };
+  return dispatch => {
+    dispatch({type: 'START_SEND_FACEBOOK_HTTP_REQUEST'});
+    fetch(`https://graph.facebook.com/v2.6/me/messenger_profile?access_token=${accessToken}`, {
+      method: 'DELETE',
+      body: JSON.stringify(body),
+      headers: {'Content-Type': 'application/json'}
+    }).then(response => {
+      if (response.ok) {
+        return response.json();
+      }
+      throw "Something wrong with the request";
+    }).then(json => {
+      console.log(json);
+      return dispatch({
+        type: 'SEND_FACEBOOK_HTTP_REQUEST_FINISH',
+        message: successMessage || 'Successfully deleted',
+        messageStatus: 'success'
+      })
+    }).catch(error => {
+      console.log(error);
+      return dispatch({
+        type: 'SEND_FACEBOOK_HTTP_REQUEST_FINISH',
+        message: 'Something went wrong',
+        messageStatus: 'error'
+      });
+    });
+  }
+};
+
 const mapStateToProps = (state) => {
   return {
     main: state.mainReducer,
@@ -180,6 +213,7 @@ const mapDispatchToProps = (dispatch) => {
     loadCurrentPersistentMenu: (accessToken) => dispatch(loadCurrentPersistentMenu(accessToken)),
     loadCurrentGreetingText: (accessToken) => dispatch(loadCurrentGreetingText(accessToken)),
     loadCurrentGetStartedButton: (accessToken) => dispatch(loadCurrentGetStartedButton(accessToken)),
+    sendFacebookDeleteRequest: (accessToken, field, successMessage) => dispatch(sendFacebookDeleteRequest(accessToken, field, successMessage)),
   };
 };
 

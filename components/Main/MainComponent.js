@@ -75,6 +75,21 @@ class MainComponent extends React.Component {
     this.props.loadCurrentGreetingText(this.props.main.accessToken);
   }
 
+  deleteExistingPersistentMenu(event) {
+    event.preventDefault();
+    this.props.sendFacebookDeleteRequest(this.props.main.accessToken, 'persistent_menu', 'Successfully deleted existing menu from the bot.');
+  }
+
+  deleteExistingGetStartedButton(event) {
+    event.preventDefault();
+    this.props.sendFacebookDeleteRequest(this.props.main.accessToken, 'get_started', 'Successfully deleted existing get started from the bot.');
+  }
+
+  deleteExistingGreetingText(event) {
+    event.preventDefault();
+    this.props.sendFacebookDeleteRequest(this.props.main.accessToken, 'greeting', 'Successfully deleted existing greeting from the bot.');
+  }
+
   componentDidMount() {
     componentHandler.upgradeDom();
   };
@@ -151,6 +166,7 @@ class MainComponent extends React.Component {
             <GreetingTextRequestButtons disabled={!this.props.main.accessTokenIsValid}
                                         loadCurrentGreetingText={this.loadCurrentGreetingText.bind(this)}
                                         sendGreetingTextRequest={this.sendGreetingTextRequest.bind(this)}
+                                        deleteExistingGreetingText={this.deleteExistingGreetingText.bind(this)}
             />
             <GreetingTextContainer/>
           </div>
@@ -160,6 +176,7 @@ class MainComponent extends React.Component {
             <GetStartedRequestButtons disabled={!this.props.main.accessTokenIsValid}
                                       loadCurrentGetStartedButton={this.loadCurrentGetStartedButton.bind(this)}
                                       sendGetStartedRequest={this.sendGetStartedButtonRequest.bind(this)}
+                                      deleteExistingGetStartedButton={this.deleteExistingGetStartedButton.bind(this)}
             />
             <GetStartedContainer/>
           </div>
@@ -169,6 +186,7 @@ class MainComponent extends React.Component {
             <PersistentMenuRequestButtons disabled={!this.props.main.accessTokenIsValid}
                                           loadCurrentPersistentMenu={this.loadCurrentPersistentMenu.bind(this)}
                                           sendPersistentMenuRequest={this.sendPersistentMenuRequest.bind(this)}
+                                          deleteExistingPersistentMenu={this.deleteExistingPersistentMenu.bind(this)}
             />
             <PersistentMenuContainer/>
           </div>

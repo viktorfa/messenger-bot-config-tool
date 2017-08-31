@@ -21,12 +21,25 @@ const PersistentMenuRequestButtons = (props) => {
                   help
                 </span>
       </button>
+      <button className="mdl-button mdl-js-button"
+              onClick={event => props.deleteExistingPersistentMenu(event)}
+              disabled={props.disabled}>
+        Delete existing persistent menu
+        <span id="delete-persistent-menu-tooltip"
+              className={`material-icons ${props.disabled ? '' : 'hidden'}`}>
+                  help
+                </span>
+      </button>
       <div className={`mdl-tooltip`}
            data-mdl-for="load-persistent-menu-tooltip">
         Validate your token first
       </div>
       <div className={`mdl-tooltip`}
            data-mdl-for="set-persistent-menu-tooltip">
+        Validate your token first
+      </div>
+      <div className={`mdl-tooltip`}
+           data-mdl-for="delete-persistent-menu-tooltip">
         Validate your token first
       </div>
     </div>
@@ -37,6 +50,8 @@ PersistentMenuRequestButtons.propTypes = {
   disabled: PropTypes.bool.isRequired,
   loadCurrentPersistentMenu: PropTypes.func.isRequired,
   sendPersistentMenuRequest: PropTypes.func.isRequired,
+  deleteExistingPersistentMenu: PropTypes.func.isRequired,
+
 };
 
 export default PersistentMenuRequestButtons;
