@@ -1,0 +1,36 @@
+.persistent-menu-button {
+  border-bottom: 1px solid gray;
+  padding: 5px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+}
+.persistent-menu-button:hover {
+  cursor: pointer;
+}
+.persistent-menu-button:last-child {
+  border-bottom: 0;
+}
+
+.persistent-menu-button-content {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-grow: 2;
+}
+
+.persistent-menu-buttons {
+  background: #eee;
+  padding: 0 10px;
+  border: 1px solid gray;
+}
+
+.persistent-menu-delete-button {
+  display: flex;
+  justify-content: center;
+}
+
+.persistent-menu-header {
+  font-weight: bold;
+}
