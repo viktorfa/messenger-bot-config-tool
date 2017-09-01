@@ -63,5 +63,5 @@ module.exports = task('build', () => {
   return Promise.resolve()
     .then(bundle)
     .then(html)
-    .then(sitemap);
+    /*.then(sitemap)*/;
 });
