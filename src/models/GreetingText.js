@@ -15,7 +15,11 @@ class GreetingText {
   }
 
   static constructFromPrevious(previous) {
-    return new GreetingText(previous.locale, previous.text);
+    if (previous) {
+      return new GreetingText(previous.locale, previous.text);
+    } else {
+      return new GreetingText();
+    }
   }
 }
 

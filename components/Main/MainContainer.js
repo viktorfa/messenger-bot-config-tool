@@ -130,9 +130,10 @@ const loadCurrentBotConfig = (accessToken, successMessage, callback) => {
 const loadCurrentPersistentMenu = (accessToken) => {
   return (dispatch, getState) => {
     dispatch(loadCurrentBotConfig(accessToken, 'Persistent menu loaded successfully', () => {
+      let currentPersistentMenu = getState().mainReducer.currentPersistentMenu ? getState().mainReducer.currentPersistentMenu[0] : null;
       return {
         type: 'SET_PERSISTENT_MENU',
-        persistentMenu: PersistentMenu.constructFromPrevious(getState().mainReducer.currentPersistentMenu[0])
+        persistentMenu: PersistentMenu.constructFromPrevious(currentPersistentMenu)
       }
     }));
   };
@@ -141,9 +142,10 @@ const loadCurrentPersistentMenu = (accessToken) => {
 const loadCurrentGreetingText = (accessToken) => {
   return (dispatch, getState) => {
     dispatch(loadCurrentBotConfig(accessToken, 'Greeting text loaded successfully', () => {
+      let currentGreeting = getState().mainReducer.currentGreeting ? getState().mainReducer.currentGreeting[0] : null;
       return {
         type: 'SET_GREETING_TEXT',
-        greetingText: GreetingText.constructFromPrevious(getState().mainReducer.currentGreeting[0])
+        greetingText: GreetingText.constructFromPrevious(currentGreeting)
       }
     }));
   };
@@ -152,9 +154,10 @@ const loadCurrentGreetingText = (accessToken) => {
 const loadCurrentGetStartedButton = (accessToken) => {
   return (dispatch, getState) => {
     dispatch(loadCurrentBotConfig(accessToken, 'Get started button loaded successfully', () => {
+      let currentGetStarted = getState().mainReducer.currentGetStarted;
       return {
         type: 'SET_GET_STARTED_BUTTON',
-        getStartedButton: GetStartedButton.constructFromPrevious(getState().mainReducer.currentGetStarted)
+        getStartedButton: GetStartedButton.constructFromPrevious(currentGetStarted)
       }
     }));
   };

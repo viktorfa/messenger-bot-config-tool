@@ -18,7 +18,11 @@ class GetStartedButton {
   }
 
   static constructFromPrevious(previous) {
-    return new GetStartedButton(previous.payload);
+    if (previous) {
+      return new GetStartedButton(previous.payload);
+    } else {
+      return new GetStartedButton();
+    }
   }
 
   createBodyForRequest() {

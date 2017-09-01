@@ -11,12 +11,16 @@ class PersistentMenu {
   }
 
   static constructFromPrevious(previous) {
-    const result = new PersistentMenu(previous.locale, previous.composer_input_disabled);
-    let newMenuItem;
-    previous.call_to_actions.forEach(callToAction => {
-      newMenuItem = MenuItem.constructFromPreviousAndAddToMenu(callToAction, result.getMenuItem('root'), result);
-    });
-    return result;
+    if (previous) {
+      const result = new PersistentMenu(previous.locale, previous.composer_input_disabled);
+      let newMenuItem;
+      previous.call_to_actions.forEach(callToAction => {
+        newMenuItem = MenuItem.constructFromPreviousAndAddToMenu(callToAction, result.getMenuItem('root'), result);
+      });
+      return result;
+    } else {
+      return new PersistentMenu();
+    }
   }
 
   createBodyForRequest() {
