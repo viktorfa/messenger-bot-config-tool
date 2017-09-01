@@ -6,7 +6,7 @@ const GreetingTextRequestButtons = (props) => {
     <div style={{display: 'flex'}}>
       <button className="mdl-button mdl-js-button" onClick={event => props.sendGreetingTextRequest(event)}
               disabled={props.disabled}>
-        Send greeting text request
+        Update existing greeting text
         <span id="set-greeting-text-tooltip"
               className={`material-icons ${props.disabled ? '' : 'hidden'}`}>
                   help

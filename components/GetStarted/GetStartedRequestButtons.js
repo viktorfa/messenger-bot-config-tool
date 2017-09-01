@@ -6,7 +6,7 @@ const GetStartedRequestButtons = (props) => {
     <div style={{display: 'flex'}}>
       <button className="mdl-button mdl-js-button" onClick={event => props.sendGetStartedRequest(event)}
               disabled={props.disabled}>
-        Send get started request
+        Update existing get started
         <span id="set-get-started-tooltip"
               className={`material-icons ${props.disabled ? '' : 'hidden'}`}>
                   help

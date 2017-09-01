@@ -6,7 +6,7 @@ const PersistentMenuRequestButtons = (props) => {
     <div style={{display: 'flex'}}>
       <button className="mdl-button mdl-js-button" onClick={event => props.sendPersistentMenuRequest(event)}
               disabled={props.disabled}>
-        Send persistent menu request
+        Update existing persistent menu
         <span id="set-persistent-menu-tooltip"
               className={`material-icons ${props.disabled ? '' : 'hidden'}`}>
                   help
