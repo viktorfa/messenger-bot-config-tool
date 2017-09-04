@@ -3,7 +3,7 @@ import GreetingText from "../models/GreetingText";
 
 export const getInitialGreetingText = () => {
   const result = new GreetingText();
-  result.setText("What's up niggaz");
+  result.setText("Welcome");
   return result;
 };
 
