@@ -14,10 +14,12 @@ class WhitelistedDomains {
   addDomain(domain) {
     if (this.domains.length >= 50) {
       throw new Error(`Too many domains. Max is ${this.maxLength}.`);
+    } else if (this.domains.find(x => x === domain)) {
+      throw new Error(`${domain} is already in the list.`)
     } else if (!WhitelistedDomains.validateDomain(domain)) {
       throw new Error(`Domain is not valid: ${domain}`);
     } else {
-      this.domains.push(WhitelistedDomains.captureDomain(domain));
+      this.domains = [...this.domains, WhitelistedDomains.captureDomain(domain)];
     }
   }
 

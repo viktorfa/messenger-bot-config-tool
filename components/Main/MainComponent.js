@@ -1,13 +1,3 @@
-/**
- * React Static Boilerplate
- * https://github.com/kriasoft/react-static-boilerplate
- *
- * Copyright © 2015-present Kriasoft, LLC. All rights reserved.
- *
- * This source code is licensed under the MIT license found in the
- * LICENSE.txt file in the root directory of this source tree.
- */
-
 import React from 'react';
 import {isBoolean} from 'lodash';
 import PersistentMenuContainer from '../PersistentMenu/PersistentMenuContainer';
@@ -16,6 +6,8 @@ import GetStartedContainer from '../GetStarted/GetStartedContainer';
 import GetStartedRequestButtons from '../GetStarted/GetStartedRequestButtons';
 import GreetingTextContainer from '../GreetingText/GreetingTextContainer';
 import GreetingTextRequestButtons from '../GreetingText/GreetingTextRequestButtons';
+import WhitelistedDomainsContainer from '../WhitelistedDomains/WhitelistedDomainsContainer';
+import WhitelistedDomainsRequestButtons from '../WhitelistedDomains/WhitelistedDomainsRequestButtons';
 import MessageComponent from '../Util/MessageComponent';
 
 class MainComponent extends React.Component {
@@ -43,6 +35,13 @@ class MainComponent extends React.Component {
     const accessToken = this.props.main.accessToken;
     const requestBody = this.props.greetingText.greetingText.createBodyForRequest();
     this.props.sendFacebookPostRequest(accessToken, requestBody, 'Greeting text successfully updated');
+  }
+
+  sendWhitelistedDomainsRequest(event) {
+    event.preventDefault();
+    const accessToken = this.props.main.accessToken;
+    const requestBody = this.props.whitelistedDomains.whitelistedDomains.createBodyForRequest();
+    this.props.sendFacebookPostRequest(accessToken, requestBody, 'Whitelisted domains successfully updated');
   }
 
   accessTokenChange(event) {
@@ -75,6 +74,11 @@ class MainComponent extends React.Component {
     this.props.loadCurrentGreetingText(this.props.main.accessToken);
   }
 
+  loadCurrentWhitelistedDomains(event) {
+    event.preventDefault();
+    this.props.loadCurrentWhitelistedDomains(this.props.main.accessToken);
+  }
+
   deleteExistingPersistentMenu(event) {
     event.preventDefault();
     this.props.sendFacebookDeleteRequest(this.props.main.accessToken, 'persistent_menu', 'Successfully deleted existing menu from the bot.');
@@ -88,6 +92,11 @@ class MainComponent extends React.Component {
   deleteExistingGreetingText(event) {
     event.preventDefault();
     this.props.sendFacebookDeleteRequest(this.props.main.accessToken, 'greeting', 'Successfully deleted existing greeting from the bot.');
+  }
+
+  deleteExistingWhitelistedDomains(event) {
+    event.preventDefault();
+    this.props.sendFacebookDeleteRequest(this.props.main.accessToken, 'whitelisted_domains', 'Successfully deleted existing whitelisted domains from the bot.');
   }
 
   componentDidMount() {
@@ -157,6 +166,9 @@ class MainComponent extends React.Component {
               <a href="#persistent-menu"
                  className={`mdl-tabs__tab ${this.props.location.pathname === '/main/persistent-menu' ? 'is-active' : ''}`}
                  onClick={event => this.switchTab(event, 'persistent-menu')}>Persistent menu</a>
+              <a href="#whitelisted-domains"
+                 className={`mdl-tabs__tab ${this.props.location.pathname === '/main/whitelisted-domains' ? 'is-active' : ''}`}
+                 onClick={event => this.switchTab(event, 'whitelisted-domains')}>Whitelisted domains</a>
             </div>
           </div>
         </div>
@@ -189,6 +201,16 @@ class MainComponent extends React.Component {
                                           deleteExistingPersistentMenu={this.deleteExistingPersistentMenu.bind(this)}
             />
             <PersistentMenuContainer/>
+          </div>
+          ||
+          this.props.location.pathname === '/main/whitelisted-domains' &&
+          <div>
+            <WhitelistedDomainsRequestButtons disabled={!this.props.main.accessTokenIsValid}
+                                              loadCurrentWhitelistedDomains={this.loadCurrentWhitelistedDomains.bind(this)}
+                                              sendWhitelistedDomainsRequest={this.sendWhitelistedDomainsRequest.bind(this)}
+                                              deleteExistingWhitelistedDomains={this.deleteExistingWhitelistedDomains.bind(this)}
+            />
+            <WhitelistedDomainsContainer/>
           </div>
         }
       </div>

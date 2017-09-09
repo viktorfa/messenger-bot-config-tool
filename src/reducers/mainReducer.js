@@ -20,6 +20,7 @@ const mainReducer = (state = inititalState, action) => {
         currentGreeting: action.greeting,
         currentPersistentMenu: action.persistentMenu,
         currentGetStarted: action.getStarted,
+        currentWhitelistedDomains: action.whitelistedDomains,
         accessTokenIsValid: true,
       };
     case 'SET_ACCESS_TOKEN_INVALID':

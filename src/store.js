@@ -1,13 +1,3 @@
-/**
- * React Static Boilerplate
- * https://github.com/kriasoft/react-static-boilerplate
- *
- * Copyright © 2015-present Kriasoft, LLC. All rights reserved.
- *
- * This source code is licensed under the MIT license found in the
- * LICENSE.txt file in the root directory of this source tree.
- */
-
 import {createStore, combineReducers, applyMiddleware} from 'redux';
 import {composeWithDevTools} from 'redux-devtools-extension'
 import thunk from 'redux-thunk';
@@ -17,6 +7,7 @@ import mainReducer from './reducers/mainReducer';
 import persistentMenuReducer from './reducers/persistentMenuReducer';
 import getStartedReducer from './reducers/getStartedReducer';
 import greetingTextReducer from "./reducers/greetingTextReducer";
+import whitelistedDomainsReducer from "./reducers/whitelistedDomainsReducer";
 
 // Create a history of your choosing (we're using a browser history in this case)
 export const history = createHistory();
@@ -25,6 +16,13 @@ export const history = createHistory();
 const middleware = routerMiddleware(history);
 
 export default createStore(
-  combineReducers({mainReducer, persistentMenuReducer, getStartedReducer, greetingTextReducer, routerReducer}),
+  combineReducers({
+    mainReducer,
+    persistentMenuReducer,
+    getStartedReducer,
+    greetingTextReducer,
+    whitelistedDomainsReducer,
+    routerReducer
+  }),
   composeWithDevTools(applyMiddleware(thunk, middleware))
 )

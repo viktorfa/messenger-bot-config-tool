@@ -5,6 +5,7 @@ import MainComponent from './MainComponent';
 import PersistentMenu from '../../src/models/PersistentMenu';
 import GreetingText from '../../src/models/GreetingText';
 import GetStartedButton from '../../src/models/GetStartedButton';
+import WhitelistedDomains from '../../src/models/WhitelistedDomains';
 
 const setAccessToken = (accessToken) => {
   return {type: 'SET_ACCESS_TOKEN', accessToken};
@@ -57,7 +58,7 @@ const switchTab = (tabName) => {
  */
 const fetchCurrentBotConfig = (accessToken) => {
   return new Promise((resolve, reject) => {
-    return fetch(`https://graph.facebook.com/v2.6/me/messenger_profile?fields=get_started,persistent_menu,greeting&access_token=${accessToken}`)
+    return fetch(`https://graph.facebook.com/v2.6/me/messenger_profile?fields=get_started,persistent_menu,greeting,whitelisted_domains&access_token=${accessToken}`)
       .then(response => {
         if (response.ok) {
           return response.json();
@@ -87,6 +88,7 @@ const setCurrentBotConfig = (config) => {
     persistentMenu: config.persistent_menu,
     getStarted: config.get_started,
     greeting: config.greeting,
+    whitelistedDomains: config.whitelisted_domains,
   }
 };
 
@@ -163,6 +165,18 @@ const loadCurrentGetStartedButton = (accessToken) => {
   };
 };
 
+const loadCurrentWhitelistedDomains = (accessToken) => {
+  return (dispatch, getState) => {
+    dispatch(loadCurrentBotConfig(accessToken, 'Whitelisted domains loaded successfully', () => {
+      let currentWhitelistedDomains = getState().mainReducer.currentWhitelistedDomains;
+      return {
+        type: 'SET_WHITELISTED_DOMAINS',
+        whitelistedDomains: WhitelistedDomains.constructFromPrevious(currentWhitelistedDomains)
+      }
+    }));
+  };
+};
+
 const sendFacebookDeleteRequest = (accessToken, field, successMessage) => {
   const body = {
     fields: [field]
@@ -203,6 +217,7 @@ const mapStateToProps = (state) => {
     persistentMenu: state.persistentMenuReducer,
     getStartedButton: state.getStartedReducer,
     greetingText: state.greetingTextReducer,
+    whitelistedDomains: state.whitelistedDomainsReducer,
     location: state.routerReducer.location
   };
 };
@@ -216,6 +231,7 @@ const mapDispatchToProps = (dispatch) => {
     loadCurrentPersistentMenu: (accessToken) => dispatch(loadCurrentPersistentMenu(accessToken)),
     loadCurrentGreetingText: (accessToken) => dispatch(loadCurrentGreetingText(accessToken)),
     loadCurrentGetStartedButton: (accessToken) => dispatch(loadCurrentGetStartedButton(accessToken)),
+    loadCurrentWhitelistedDomains: (accessToken) => dispatch(loadCurrentWhitelistedDomains(accessToken)),
     sendFacebookDeleteRequest: (accessToken, field, successMessage) => dispatch(sendFacebookDeleteRequest(accessToken, field, successMessage)),
   };
 };
