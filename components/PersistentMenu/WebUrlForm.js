@@ -120,7 +120,6 @@ class WebUrlForm extends React.Component {
             />
           </div>
         </div>
-        <pre>{JSON.stringify(this.props.menuItem, null, 2)}</pre>
       </div>
     )
   }
