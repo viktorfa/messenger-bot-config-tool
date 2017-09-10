@@ -75,15 +75,33 @@ class MenuItem extends CallToAction {
     return _.map(this.children, (menuItem, key) => {
       switch (menuItem.type) {
         case 'web_url':
-          return {
-            type: menuItem.type,
-            title: menuItem.title,
-            url: menuItem.url,
-            webview_height_ratio: menuItem.webview_height_ratio,
-            messenger_extensions: menuItem.messenger_extensions,
-            //fallback_url: menuItem.fallback_url,
-            //webview_share_button: menuItem.webview_share_button
-          };
+          if (menuItem.messenger_extensions === true && menuItem.webview_share_button === 'hide') {
+            return {
+              type: menuItem.type,
+              title: menuItem.title,
+              url: menuItem.url,
+              webview_height_ratio: menuItem.webview_height_ratio,
+              messenger_extensions: menuItem.messenger_extensions,
+              fallback_url: menuItem.fallback_url,
+              webview_share_button: menuItem.webview_share_button
+            }
+          } else if (menuItem.messenger_extensions === true) {
+            return {
+              type: menuItem.type,
+              title: menuItem.title,
+              url: menuItem.url,
+              webview_height_ratio: menuItem.webview_height_ratio,
+              messenger_extensions: menuItem.messenger_extensions,
+              fallback_url: menuItem.fallback_url,
+            }
+          } else {
+            return {
+              type: menuItem.type,
+              title: menuItem.title,
+              url: menuItem.url,
+              webview_height_ratio: menuItem.webview_height_ratio,
+            };
+          }
         case 'postback':
           return {
             type: menuItem.type,
