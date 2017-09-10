@@ -20,6 +20,10 @@ const clickMenuItem = (menuItemId) => {
   return {type: 'CLICK_MENU_ITEM', menuItemId};
 };
 
+const editComposerInputDisabled = (composerInputDisabled) => {
+  return {type: 'EDIT_COMPOSER_INPUT_DISABLED', composerInputDisabled};
+};
+
 const editTitle = (title, menuItemId) => {
   return {type: 'EDIT_TITLE', title, menuItemId}
 };
@@ -74,6 +78,7 @@ export const mapDispatchToProps = (dispatch) => {
   return {
     clickAddNewItem: (parentId) => dispatch(clickAddNewItem(parentId)),
     clickMenuItem: (menuItemId) => dispatch(clickMenuItem(menuItemId)),
+    editComposerInputDisabled: (composerInputDisabled) => dispatch(editComposerInputDisabled(composerInputDisabled)),
     deleteMenuItem: (menuItemId) => dispatch(deleteMenuItem(menuItemId)),
     editTitle: (title, menuItemId) => dispatch(editTitle(title, menuItemId)),
     editMenuItemType: (menuItemType, menuItemId) => dispatch(editMenuItemType(menuItemType, menuItemId)),

@@ -14,67 +14,67 @@ import ExpandedSubMenuComponent from './ExpandedSubMenuComponent';
 
 const rootMenuComponent = (props) => {
   return (
-      <ExpandedSubMenuComponent
-        subMenu={props.persistentMenu.getMenuItem('root')}
-        isEditingSubMenu={props.isEditingMenuItem}
+    <ExpandedSubMenuComponent
+      subMenu={props.persistentMenu.getMenuItem('root')}
+      isEditingSubMenu={props.isEditingMenuItem}
 
-        clickMenuItem={props.clickMenuItem}
-        clickAddNewItem={props.clickAddNewItem}
-        deleteMenuItem={props.deleteMenuItem}
-        startEditSubMenu={props.startEditSubMenu}
-        startEditSubSubMenu={props.startEditSubMenu}
+      clickMenuItem={props.clickMenuItem}
+      clickAddNewItem={props.clickAddNewItem}
+      deleteMenuItem={props.deleteMenuItem}
+      startEditSubMenu={props.startEditSubMenu}
+      startEditSubSubMenu={props.startEditSubMenu}
 
-        editTitle={props.editTitle}
-        editPayload={props.editPayload}
-        editWebUrl={props.editWebUrl}
-        editFallbackUrl={props.editFallbackUrl}
-        editOptionFields={props.editOptionFields}
-        editMenuItemType={props.editMenuItemType}
-      />
+      editTitle={props.editTitle}
+      editPayload={props.editPayload}
+      editWebUrl={props.editWebUrl}
+      editFallbackUrl={props.editFallbackUrl}
+      editOptionFields={props.editOptionFields}
+      editMenuItemType={props.editMenuItemType}
+    />
   );
 };
 
 const subMenuComponent = (props) => {
   return (
-      <ExpandedSubMenuComponent
-        subMenu={props.persistentMenu.getMenuItem(props.subMenuOpen)}
-        isEditingSubMenu={props.isEditingMenuItem}
+    <ExpandedSubMenuComponent
+      subMenu={props.persistentMenu.getMenuItem(props.subMenuOpen)}
+      isEditingSubMenu={props.isEditingMenuItem}
 
-        clickMenuItem={props.clickMenuItem}
-        clickAddNewItem={props.clickAddNewItem}
-        deleteMenuItem={props.deleteMenuItem}
-        startEditSubMenu={props.startEditSubMenu}
-        startEditSubSubMenu={props.startEditSubSubMenu}
+      clickMenuItem={props.clickMenuItem}
+      clickAddNewItem={props.clickAddNewItem}
+      deleteMenuItem={props.deleteMenuItem}
+      startEditSubMenu={props.startEditSubMenu}
+      startEditSubSubMenu={props.startEditSubSubMenu}
 
-        editTitle={props.editTitle}
-        editPayload={props.editPayload}
-        editWebUrl={props.editWebUrl}
-        editFallbackUrl={props.editFallbackUrl}
-        editOptionFields={props.editOptionFields}
-        editMenuItemType={props.editMenuItemType}
-      />
+      editTitle={props.editTitle}
+      editPayload={props.editPayload}
+      editWebUrl={props.editWebUrl}
+      editFallbackUrl={props.editFallbackUrl}
+      editOptionFields={props.editOptionFields}
+      editMenuItemType={props.editMenuItemType}
+    />
   );
 };
 
 const subSubMenuComponent = (props) => {
   return (
-      <ExpandedSubMenuComponent
-        subMenu={props.persistentMenu.getMenuItem(props.subSubMenuOpen)}
-        isEditingSubMenu={props.isEditingMenuItem}
+    <ExpandedSubMenuComponent
+      subMenu={props.persistentMenu.getMenuItem(props.subSubMenuOpen)}
+      isEditingSubMenu={props.isEditingMenuItem}
 
-        clickMenuItem={props.clickMenuItem}
-        clickAddNewItem={props.clickAddNewItem}
-        deleteMenuItem={props.deleteMenuItem}
-        startEditSubMenu={props.startEditSubMenu}
-        startEditSubSubMenu={props.startEditSubSubMenu}
+      clickMenuItem={props.clickMenuItem}
+      clickAddNewItem={props.clickAddNewItem}
+      deleteMenuItem={props.deleteMenuItem}
+      startEditSubMenu={props.startEditSubMenu}
+      startEditSubSubMenu={props.startEditSubSubMenu}
 
-        editTitle={props.editTitle}
-        editPayload={props.editPayload}
-        editWebUrl={props.editWebUrl}
-        editFallbackUrl={props.editFallbackUrl}
-        editOptionFields={props.editOptionFields}
-        editMenuItemType={props.editMenuItemType}
-      />
+      editTitle={props.editTitle}
+      editPayload={props.editPayload}
+      editWebUrl={props.editWebUrl}
+      editFallbackUrl={props.editFallbackUrl}
+      editOptionFields={props.editOptionFields}
+      editMenuItemType={props.editMenuItemType}
+    />
   );
 };
 
@@ -86,6 +86,10 @@ class PersistentMenuComponent extends React.Component {
   clickSlideMenuView(event, level) {
     event.preventDefault();
     this.props.slideMenuView(level);
+  }
+
+  clickComposerInputDisabledSwitch(event) {
+    this.props.editComposerInputDisabled(!this.props.persistentMenu.composer_input_disabled);
   }
 
   showRootMenuLeft = () => {
@@ -132,6 +136,14 @@ class PersistentMenuComponent extends React.Component {
             ||
             <span></span>
           }
+        </div>
+        <div>
+          <label className="mdl-switch mdl-js-switch mdl-js-ripple-effect" htmlFor="composer_input_disabled">
+            <input type="checkbox" id="composer_input_disabled" className="mdl-switch__input"
+                   defaultChecked={this.props.persistentMenu.composer_input_disabled === false}
+                   onClick={event => this.clickComposerInputDisabledSwitch(event)}/>
+            <span className="mdl-switch__label">Enable text input</span>
+          </label>
         </div>
         <div className="mdl-grid">
           <div className="mdl-cell mdl-cell--4-col-tablet mdl-cell--6-col">

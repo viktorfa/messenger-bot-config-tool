@@ -72,16 +72,12 @@ const persistentMenuReducer = (state = getInitialState(), action) => {
   let newPersistentMenu;
   let newMenuItem;
   switch (action.type) {
-    case 'EDIT_COMPOSER_INPUT_DISABLED':
-      if (isBoolean(action.value)) {
-        newPersistentMenu = cloneDeep(state.persistentMenu);
-        newPersistentMenu.composer_input_disabled = action.value;
-        return {...state, persistentMenu: newPersistentMenu};
-      } else {
-        return state;
-      }
     case 'SET_PERSISTENT_MENU':
       return {persistentMenu: action.persistentMenu};
+    case 'EDIT_COMPOSER_INPUT_DISABLED':
+      newPersistentMenu = cloneDeep(state.persistentMenu);
+      newPersistentMenu.composer_input_disabled = action.composerInputDisabled;
+      return {...state, persistentMenu: newPersistentMenu};
     case 'CLICK_ADD_NEW_ITEM':
       newPersistentMenu = cloneDeep(state.persistentMenu);
       newMenuItem = new MenuItem('Title', state.persistentMenu.getMenuItem(action.parentId), {});
