@@ -9,22 +9,40 @@ class MenuItem extends CallToAction {
     this.level = parent.level + 1;
     this.children = {};
     this.call_to_actions = [];
+    this.payload = new Payload(config.payload || '', 1000);
     this.url = config.url || 'http://example.com';
     this.webview_height_ratio = config.webview_height_ratio || 'full';
-    this.payload = new Payload(config.payload || '', 1000)
+    if (config.messenger_extensions === true) {
+      this.messenger_extensions = config.messenger_extensions;
+      this.fallback_url = config.fallback_url || this.url;
+      this.webview_share_button = config.webview_share_button || '';
+    }
   }
 
+  /**
+   * Constructs a valid menu item and adds it correctly to the persistent menu in the argument list. Used when
+   * constructing a PersistentMenu instance from JSON.
+   * @param previous
+   * @param parent
+   * @param persistentMenu
+   */
   static constructFromPreviousAndAddToMenu(previous, parent, persistentMenu) {
     switch (previous.type) {
       case 'web_url':
         persistentMenu.addMenuItem(new MenuItem(previous.title, parent, {
           type: 'web_url',
+          url: previous.url,
           webview_height_ratio: previous.webview_height_ratio,
-          url: previous.url
+          messenger_extensions: previous.messenger_extensions,
+          fallback_url: previous.fallback_url,
+          webview_share_button: previous.webview_share_button
         }), parent.id);
         break;
       case 'postback':
-        persistentMenu.addMenuItem(new MenuItem(previous.title, parent, {payload: previous.payload, type: 'postback'}), parent.id);
+        persistentMenu.addMenuItem(new MenuItem(previous.title, parent, {
+          payload: previous.payload,
+          type: 'postback'
+        }), parent.id);
         break;
       case 'nested':
         const subMenu = persistentMenu.addMenuItem(new MenuItem(previous.title, parent, {type: 'nested'}), parent.id);
@@ -61,7 +79,10 @@ class MenuItem extends CallToAction {
             type: menuItem.type,
             title: menuItem.title,
             url: menuItem.url,
-            webview_height_ratio: menuItem.webview_height_ratio
+            webview_height_ratio: menuItem.webview_height_ratio,
+            messenger_extensions: menuItem.messenger_extensions,
+            //fallback_url: menuItem.fallback_url,
+            //webview_share_button: menuItem.webview_share_button
           };
         case 'postback':
           return {
@@ -89,8 +110,12 @@ class MenuItem extends CallToAction {
     this.url = url;
   }
 
-  setWebViewHeightRatio(webViewHeightRatio) {
-    this.webview_height_ratio = webViewHeightRatio;
+  setFallbackUrl(url) {
+    this.fallback_url = url;
+  }
+
+  setOptionFields(options) {
+    _.merge(this, _.pick(options, ['webview_height_ratio', 'messenger_extensions', 'webview_share_button']));
   }
 
 }

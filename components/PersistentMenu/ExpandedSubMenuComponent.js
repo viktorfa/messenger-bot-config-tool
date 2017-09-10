@@ -124,6 +124,8 @@ class ExpandedSubMenuComponent extends React.Component {
                 editTitle={this.props.editTitle}
                 editPayload={this.props.editPayload}
                 editWebUrl={this.props.editWebUrl}
+                editFallbackUrl={this.props.editFallbackUrl}
+                editOptionFields={this.props.editOptionFields}
                 editMenuItemType={this.props.editMenuItemType}
                 startEditSubMenu={this.props.startEditSubMenu}
                 startEditSubSubMenu={this.props.startEditSubSubMenu}

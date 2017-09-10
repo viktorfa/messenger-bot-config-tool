@@ -35,7 +35,7 @@ class WhitelistedDomains {
 
   createBodyForRequest() {
     return {
-      whitelisted_domains: this.domains
+      whitelisted_domains: this.domains.map(domain => `https://${domain}`)
     }
   }
 

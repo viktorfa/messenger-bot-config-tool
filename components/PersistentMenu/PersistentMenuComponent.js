@@ -27,6 +27,8 @@ const rootMenuComponent = (props) => {
         editTitle={props.editTitle}
         editPayload={props.editPayload}
         editWebUrl={props.editWebUrl}
+        editFallbackUrl={props.editFallbackUrl}
+        editOptionFields={props.editOptionFields}
         editMenuItemType={props.editMenuItemType}
       />
   );
@@ -47,6 +49,8 @@ const subMenuComponent = (props) => {
         editTitle={props.editTitle}
         editPayload={props.editPayload}
         editWebUrl={props.editWebUrl}
+        editFallbackUrl={props.editFallbackUrl}
+        editOptionFields={props.editOptionFields}
         editMenuItemType={props.editMenuItemType}
       />
   );
@@ -67,6 +71,8 @@ const subSubMenuComponent = (props) => {
         editTitle={props.editTitle}
         editPayload={props.editPayload}
         editWebUrl={props.editWebUrl}
+        editFallbackUrl={props.editFallbackUrl}
+        editOptionFields={props.editOptionFields}
         editMenuItemType={props.editMenuItemType}
       />
   );

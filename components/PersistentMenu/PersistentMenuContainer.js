@@ -36,6 +36,14 @@ const editWebUrl = (url, menuItemId) => {
   return {type: 'EDIT_WEB_URL', url, menuItemId};
 };
 
+const editFallbackUrl = (url, menuItemId) => {
+  return {type: 'EDIT_FALLBACK_URL', url, menuItemId};
+};
+
+const editOptionFields = (options, menuItemId) => {
+  return {type: 'EDIT_OPTION_FIELDS', options, menuItemId};
+};
+
 const startEditSubMenu = (menuItemId) => {
   return {type: 'OPEN_SUB_MENU', menuItemId}
 };
@@ -49,7 +57,7 @@ const deleteMenuItem = (menuItemId) => {
 };
 
 const slideMenuView = (menuViewLevel) => {
-   return {type: 'SLIDE_MENU_VIEW', menuViewLevel};
+  return {type: 'SLIDE_MENU_VIEW', menuViewLevel};
 };
 
 const mapStateToProps = (state) => {
@@ -63,7 +71,6 @@ const mapStateToProps = (state) => {
 };
 
 export const mapDispatchToProps = (dispatch) => {
-  console.log("MAP DISPATCH TO PROPS");
   return {
     clickAddNewItem: (parentId) => dispatch(clickAddNewItem(parentId)),
     clickMenuItem: (menuItemId) => dispatch(clickMenuItem(menuItemId)),
@@ -72,6 +79,8 @@ export const mapDispatchToProps = (dispatch) => {
     editMenuItemType: (menuItemType, menuItemId) => dispatch(editMenuItemType(menuItemType, menuItemId)),
     editPayload: (payload, menuItemId) => dispatch(editPayload(payload, menuItemId)),
     editWebUrl: (url, menuItemId) => dispatch(editWebUrl(url, menuItemId)),
+    editFallbackUrl: (url, menuItemId) => dispatch(editFallbackUrl(url, menuItemId)),
+    editOptionFields: (options, menuItemId) => dispatch(editOptionFields(options, menuItemId)),
     startEditSubMenu: (menuItemId) => dispatch(startEditSubMenu(menuItemId)),
     startEditSubSubMenu: (menuItemId) => dispatch(startEditSubSubMenu(menuItemId)),
     slideMenuView: (menuViewLevel) => dispatch(slideMenuView(menuViewLevel)),

@@ -119,6 +119,14 @@ const persistentMenuReducer = (state = getInitialState(), action) => {
       newPersistentMenu = cloneDeep(state.persistentMenu);
       newPersistentMenu.getMenuItem(action.menuItemId).setUrl(action.url);
       return {...state, persistentMenu: newPersistentMenu};
+    case 'EDIT_FALLBACK_URL':
+      newPersistentMenu = cloneDeep(state.persistentMenu);
+      newPersistentMenu.getMenuItem(action.menuItemId).setFallbackUrl(action.url);
+      return {...state, persistentMenu: newPersistentMenu};
+    case 'EDIT_OPTION_FIELDS':
+      newPersistentMenu = cloneDeep(state.persistentMenu);
+      newPersistentMenu.getMenuItem(action.menuItemId).setOptionFields(action.options);
+      return {...state, persistentMenu: newPersistentMenu};
     case 'START_EDIT_SUB_MENU':
       return {...state, isEditingSubMenu: action.menuItem.id};
     case 'OPEN_SUB_MENU':

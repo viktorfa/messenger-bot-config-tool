@@ -1,6 +1,7 @@
 import React from 'react'
 import PayloadInput from '../Util/PayloadInput';
 import InputLengthChip from '../Util/InputLengthChip';
+import WebUrlForm from './WebUrlForm';
 class AddMenuItemForm extends React.Component {
 
   editTitle(event) {
@@ -41,6 +42,11 @@ class AddMenuItemForm extends React.Component {
     this.props.editWebUrl(event.target.value, this.props.menuItem.id);
   }
 
+  editFallbackUrl(event) {
+    event.preventDefault();
+    this.props.editFallbackUrl(event.target.value, this.props.menuItem.id);
+  }
+
   componentDidMount() {
     componentHandler.upgradeDom();
   };
@@ -74,7 +80,7 @@ class AddMenuItemForm extends React.Component {
             }
           </div>
         </div>
-        <form onSubmit={event => this.submitForm(event)} style={{display: 'flex', flexFlow: 'column'}}>
+        <div style={{display: 'flex', flexFlow: 'column'}}>
           <div className="mdl-textfield mdl-js-textfield">
             <label htmlFor="menu-item-title" className="mdl-textfield__label">Title</label>
             <input type="text"
@@ -88,27 +94,20 @@ class AddMenuItemForm extends React.Component {
           </div>
           {
             this.props.menuItem.type === 'web_url' ?
-              (
-                <div className="mdl-textfield mdl-js-textfield">
-                  <label htmlFor="web_url" className="mdl-textfield__label">{'http://example.com'}</label>
-                  <input
-                    className="mdl-textfield__input"
-                    type="url"
-                    id="web-url"
-                    value={this.props.menuItem.url}
-                    onChange={event => this.editWebUrl(event)}
-                  />
-                </div>
-              )
+              <WebUrlForm menuItem={this.props.menuItem}
+                          editWebUrl={this.editWebUrl.bind(this)}
+                          editFallbackUrl={this.editFallbackUrl.bind(this)}
+                          editOptionFields={this.props.editOptionFields}/>
               : this.props.menuItem.type === 'postback' ?
               <PayloadInput payload={this.props.menuItem.payload} editPayload={this.editPayload.bind(this)}/>
               : this.props.menuItem.type === 'nested' ?
-              <button className="mdl-button mdl-js-button" onClick={event => this.clickEditMenu(event)}>Edit
-                menu</button>
+              <button className="mdl-button mdl-js-button" onClick={event => this.clickEditMenu(event)}>
+                Edit menu
+              </button>
               :
               ''
           }
-        </form>
+        </div>
       </div>
     )
   }
