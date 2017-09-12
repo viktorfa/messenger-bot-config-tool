@@ -15,17 +15,15 @@ class MBCCheckbox extends React.Component {
 
   render() {
     return (
-      <div>
-        <label
-          className={`mdl-checkbox mdl-js-checkbox mdl-js-ripple-effect ${this.props.checked ? 'is-checked' : ''}`}
-          htmlFor={this.id}>
-          <input type="checkbox" id={this.id} className="mdl-checkbox__input"
-                 style={{visibility: 'hidden'}}
-                 checked={this.props.checked}
-                 onClick={this.handleClick}/>
-          <span className="mdl-checkbox__label">{this.props.labelText}</span>
-        </label>
-      </div>
+      <label
+        className={`mdl-checkbox mdl-js-checkbox mdl-js-ripple-effect ${this.props.checked ? 'is-checked' : ''}`}
+        htmlFor={this.id}>
+        <input type="checkbox" id={this.id} className="mdl-checkbox__input"
+               style={{visibility: 'hidden'}}
+               checked={this.props.checked}
+               onClick={this.handleClick}/>
+        <span className="mdl-checkbox__label">{this.props.labelText}</span>
+      </label>
     )
   }
 }
