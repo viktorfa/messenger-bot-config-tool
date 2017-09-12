@@ -3,7 +3,7 @@ import MenuItem from './MenuItem';
 class PersistentMenu {
   constructor(locale, composerInputDisabled) {
     this.locale = locale || 'default';
-    this.composer_input_disabled = composerInputDisabled || true;
+    this.composer_input_disabled = composerInputDisabled !== false;
     const rootMenu = new MenuItem('root', {id: 'root', level: -1}, {type: 'nested'});
     rootMenu.id = 'root';
     this.menuItems = {root: rootMenu};

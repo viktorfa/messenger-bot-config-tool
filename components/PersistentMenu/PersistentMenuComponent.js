@@ -1,16 +1,6 @@
-/**
- * React Static Boilerplate
- * https://github.com/kriasoft/react-static-boilerplate
- *
- * Copyright © 2015-present Kriasoft, LLC. All rights reserved.
- *
- * This source code is licensed under the MIT license found in the
- * LICENSE.txt file in the root directory of this source tree.
- */
-
 import React from 'react';
-import _ from 'lodash';
 import ExpandedSubMenuComponent from './ExpandedSubMenuComponent';
+import MBCCheckbox from '../Util/MBCCheckbox';
 
 const rootMenuComponent = (props) => {
   return (
@@ -81,6 +71,9 @@ const subSubMenuComponent = (props) => {
 class PersistentMenuComponent extends React.Component {
   constructor(props) {
     super(props);
+
+    this.toggleComposerInputDisabled = this.toggleComposerInputDisabled.bind(this);
+    this.clickSlideMenuView = this.clickSlideMenuView.bind(this);
   }
 
   clickSlideMenuView(event, level) {
@@ -88,7 +81,7 @@ class PersistentMenuComponent extends React.Component {
     this.props.slideMenuView(level);
   }
 
-  clickComposerInputDisabledSwitch(event) {
+  toggleComposerInputDisabled() {
     this.props.editComposerInputDisabled(!this.props.persistentMenu.composer_input_disabled);
   }
 
@@ -116,6 +109,14 @@ class PersistentMenuComponent extends React.Component {
     return this.showRootMenuLeft() && this.props.subSubMenuOpen;
   };
 
+  componentDidMount() {
+    componentHandler.upgradeDom();
+  };
+
+  componentDidUpdate() {
+    componentHandler.upgradeDom();
+  };
+
   render() {
     return (
       <div>
@@ -137,14 +138,10 @@ class PersistentMenuComponent extends React.Component {
             <span></span>
           }
         </div>
-        <div>
-          <label className="mdl-switch mdl-js-switch mdl-js-ripple-effect" htmlFor="composer_input_disabled">
-            <input type="checkbox" id="composer_input_disabled" className="mdl-switch__input"
-                   defaultChecked={this.props.persistentMenu.composer_input_disabled === false}
-                   onClick={event => this.clickComposerInputDisabledSwitch(event)}/>
-            <span className="mdl-switch__label">Enable text input</span>
-          </label>
-        </div>
+        <MBCCheckbox handleClick={this.toggleComposerInputDisabled}
+                     checked={!this.props.persistentMenu.composer_input_disabled}
+                     labelText={'Enable text input'}
+        />
         <div className="mdl-grid">
           <div className="mdl-cell mdl-cell--4-col-tablet mdl-cell--6-col">
             {

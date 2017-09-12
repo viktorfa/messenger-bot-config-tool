@@ -2,43 +2,6 @@ import {cloneDeep, isBoolean} from 'lodash';
 import PersistentMenu from "../models/PersistentMenu";
 import MenuItem from "../models/MenuItem";
 
-const initialState = {
-  foo: 'bar',
-  persistentMenu: {
-    locale: "default",
-    composer_input_disabled: true,
-    call_to_actions: [
-      {
-        title: "My Account",
-        type: "nested",
-        call_to_actions: [
-          {
-            title: "Pay Bill",
-            type: "postback",
-            payload: "PAYBILL_PAYLOAD"
-          },
-          {
-            title: "History",
-            type: "postback",
-            payload: "HISTORY_PAYLOAD"
-          },
-          {
-            title: "Contact Info",
-            type: "postback",
-            payload: "CONTACT_INFO_PAYLOAD"
-          }
-        ]
-      },
-      {
-        type: "web_url",
-        title: "Latest News",
-        url: "http://petershats.parseapp.com/hat-news",
-        webview_height_ratio: "full"
-      }
-    ]
-  }
-};
-
 export const getInitialPersistentMenu = () => {
   const initialPersistentMenu = new PersistentMenu();
   const initialRootMenu = initialPersistentMenu.getMenuItem('root');
