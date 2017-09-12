@@ -6,6 +6,7 @@ import PersistentMenu from '../../src/models/PersistentMenu';
 import GreetingText from '../../src/models/GreetingText';
 import GetStartedButton from '../../src/models/GetStartedButton';
 import WhitelistedDomains from '../../src/models/WhitelistedDomains';
+import ConfigFields from '../../src/models/ConfigFields';
 
 const setAccessToken = (accessToken) => {
   return {type: 'SET_ACCESS_TOKEN', accessToken};
@@ -177,6 +178,29 @@ const loadCurrentWhitelistedDomains = (accessToken) => {
   };
 };
 
+const loadConfigField = (accessToken, field) => {
+  switch (field) {
+    case ConfigFields.PERSISTENT_MENU:
+      return loadCurrentPersistentMenu(accessToken);
+    case ConfigFields.GET_STARTED:
+      return loadCurrentGetStartedButton(accessToken);
+    case ConfigFields.GREETING:
+      return loadCurrentGreetingText(accessToken);
+    case ConfigFields.WHITELISTED_DOMAINS:
+      return loadCurrentWhitelistedDomains(accessToken);
+    default:
+      throw new Error(`Invalid config field: ${field}`);
+  }
+};
+
+const updateConfigField = (accessToken, field, configObject) => {
+  return sendFacebookPostRequest(accessToken, configObject.createBodyForRequest());
+};
+
+const deleteConfigField = (accessToken, field) => {
+  sendFacebookDeleteRequest(accessToken, field, `${field} successfully deleted`);
+};
+
 const sendFacebookDeleteRequest = (accessToken, field, successMessage) => {
   const body = {
     fields: [field]
@@ -225,14 +249,11 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
   return {
     setAccessToken: (accessToken) => dispatch(setAccessToken(accessToken)),
-    sendFacebookPostRequest: (accessToken, body, successMessage) => dispatch(sendFacebookPostRequest(accessToken, body, successMessage)),
     switchTab: (tabName) => dispatch(switchTab(tabName)),
     loadCurrentBotConfig: (accessToken, successMessage) => dispatch(loadCurrentBotConfig(accessToken, successMessage)),
-    loadCurrentPersistentMenu: (accessToken) => dispatch(loadCurrentPersistentMenu(accessToken)),
-    loadCurrentGreetingText: (accessToken) => dispatch(loadCurrentGreetingText(accessToken)),
-    loadCurrentGetStartedButton: (accessToken) => dispatch(loadCurrentGetStartedButton(accessToken)),
-    loadCurrentWhitelistedDomains: (accessToken) => dispatch(loadCurrentWhitelistedDomains(accessToken)),
-    sendFacebookDeleteRequest: (accessToken, field, successMessage) => dispatch(sendFacebookDeleteRequest(accessToken, field, successMessage)),
+    loadConfigField: (accessToken, field) => dispatch(loadConfigField(accessToken, field)),
+    updateConfigField: (accessToken, field, configObject) => dispatch(updateConfigField(accessToken, field, configObject)),
+    deleteConfigField: (accessToken, field) => dispatch(deleteConfigField(accessToken, field)),
   };
 };
 

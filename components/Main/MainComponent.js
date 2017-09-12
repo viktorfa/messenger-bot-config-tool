@@ -1,47 +1,17 @@
 import React from 'react';
 import {isBoolean} from 'lodash';
 import PersistentMenuContainer from '../PersistentMenu/PersistentMenuContainer';
-import PersistentMenuRequestButtons from '../PersistentMenu/PersistentMenuRequestButtons';
 import GetStartedContainer from '../GetStarted/GetStartedContainer';
-import GetStartedRequestButtons from '../GetStarted/GetStartedRequestButtons';
 import GreetingTextContainer from '../GreetingText/GreetingTextContainer';
-import GreetingTextRequestButtons from '../GreetingText/GreetingTextRequestButtons';
 import WhitelistedDomainsContainer from '../WhitelistedDomains/WhitelistedDomainsContainer';
-import WhitelistedDomainsRequestButtons from '../WhitelistedDomains/WhitelistedDomainsRequestButtons';
 import MessageComponent from '../Util/MessageComponent';
+import MBCRequestButtonsMenu from '../Util/MBCRequestButtonsMenu';
+import ConfigFields from '../../src/models/ConfigFields';
 
 class MainComponent extends React.Component {
   constructor(props) {
     super(props);
     this.state = {};
-  }
-
-  sendPersistentMenuRequest(event) {
-    event.preventDefault();
-    const accessToken = this.props.main.accessToken;
-    const requestBody = this.props.persistentMenu.persistentMenu.createBodyForRequest();
-    this.props.sendFacebookPostRequest(accessToken, requestBody, 'Persistent menu successfully updated');
-  }
-
-  sendGetStartedButtonRequest(event) {
-    event.preventDefault();
-    const accessToken = this.props.main.accessToken;
-    const requestBody = this.props.getStartedButton.getStartedButton.createBodyForRequest();
-    this.props.sendFacebookPostRequest(accessToken, requestBody, 'Get started button successfully updated');
-  }
-
-  sendGreetingTextRequest(event) {
-    event.preventDefault();
-    const accessToken = this.props.main.accessToken;
-    const requestBody = this.props.greetingText.greetingText.createBodyForRequest();
-    this.props.sendFacebookPostRequest(accessToken, requestBody, 'Greeting text successfully updated');
-  }
-
-  sendWhitelistedDomainsRequest(event) {
-    event.preventDefault();
-    const accessToken = this.props.main.accessToken;
-    const requestBody = this.props.whitelistedDomains.whitelistedDomains.createBodyForRequest();
-    this.props.sendFacebookPostRequest(accessToken, requestBody, 'Whitelisted domains successfully updated');
   }
 
   accessTokenChange(event) {
@@ -59,44 +29,36 @@ class MainComponent extends React.Component {
     this.props.loadCurrentBotConfig(this.props.main.accessToken, 'Access token is valid :)');
   }
 
-  loadCurrentPersistentMenu(event) {
+  updateConfigField(event, field) {
     event.preventDefault();
-    this.props.loadCurrentPersistentMenu(this.props.main.accessToken);
+    let configObject;
+    switch (field) {
+      case ConfigFields.PERSISTENT_MENU:
+        configObject = this.props.persistentMenu.persistentMenu;
+        break;
+      case ConfigFields.GET_STARTED:
+        configObject = this.props.getStartedButton.getStartedButton;
+        break;
+      case ConfigFields.GREETING:
+        configObject = this.props.greetingText.greetingText;
+        break;
+      case ConfigFields.WHITELISTED_DOMAINS:
+        configObject = this.props.whitelistedDomains.whitelistedDomains;
+        break;
+      default:
+        throw new Error(`Invalid config field: ${field}`);
+    }
+    this.props.updateConfigField(this.props.main.accessToken, field, configObject);
   }
 
-  loadCurrentGetStartedButton(event) {
+  loadConfigField(event, field) {
     event.preventDefault();
-    this.props.loadCurrentGetStartedButton(this.props.main.accessToken);
+    this.props.loadConfigField(this.props.main.accessToken, field);
   }
 
-  loadCurrentGreetingText(event) {
+  deleteConfigField(event, field) {
     event.preventDefault();
-    this.props.loadCurrentGreetingText(this.props.main.accessToken);
-  }
-
-  loadCurrentWhitelistedDomains(event) {
-    event.preventDefault();
-    this.props.loadCurrentWhitelistedDomains(this.props.main.accessToken);
-  }
-
-  deleteExistingPersistentMenu(event) {
-    event.preventDefault();
-    this.props.sendFacebookDeleteRequest(this.props.main.accessToken, 'persistent_menu', 'Successfully deleted existing menu from the bot.');
-  }
-
-  deleteExistingGetStartedButton(event) {
-    event.preventDefault();
-    this.props.sendFacebookDeleteRequest(this.props.main.accessToken, 'get_started', 'Successfully deleted existing get started from the bot.');
-  }
-
-  deleteExistingGreetingText(event) {
-    event.preventDefault();
-    this.props.sendFacebookDeleteRequest(this.props.main.accessToken, 'greeting', 'Successfully deleted existing greeting from the bot.');
-  }
-
-  deleteExistingWhitelistedDomains(event) {
-    event.preventDefault();
-    this.props.sendFacebookDeleteRequest(this.props.main.accessToken, 'whitelisted_domains', 'Successfully deleted existing whitelisted domains from the bot.');
+    this.props.deleteConfigField(this.props.main.accessToken, field);
   }
 
   componentDidMount() {
@@ -175,40 +137,48 @@ class MainComponent extends React.Component {
         {
           this.props.location.pathname === '/main/greeting-text' &&
           <div style={{display: 'flex', flexFlow: 'column', alignItems: 'center'}}>
-            <GreetingTextRequestButtons disabled={!this.props.main.accessTokenIsValid}
-                                        loadCurrentGreetingText={this.loadCurrentGreetingText.bind(this)}
-                                        sendGreetingTextRequest={this.sendGreetingTextRequest.bind(this)}
-                                        deleteExistingGreetingText={this.deleteExistingGreetingText.bind(this)}
+            <MBCRequestButtonsMenu
+              fieldName="Greeting text"
+              updateHandler={event => this.updateConfigField(event, ConfigFields.GREETING)}
+              deleteHandler={event => this.deleteConfigField(event, ConfigFields.GREETING)}
+              loadHandler={event => this.loadConfigField(event, ConfigFields.GREETING)}
+              tokenIsValidated={!!this.props.main.accessTokenIsValid}
             />
             <GreetingTextContainer/>
           </div>
           ||
           this.props.location.pathname === '/main/get-started' &&
           <div style={{display: 'flex', flexFlow: 'column', alignItems: 'center'}}>
-            <GetStartedRequestButtons disabled={!this.props.main.accessTokenIsValid}
-                                      loadCurrentGetStartedButton={this.loadCurrentGetStartedButton.bind(this)}
-                                      sendGetStartedRequest={this.sendGetStartedButtonRequest.bind(this)}
-                                      deleteExistingGetStartedButton={this.deleteExistingGetStartedButton.bind(this)}
+            <MBCRequestButtonsMenu
+              fieldName="Get started"
+              updateHandler={event => this.updateConfigField(event, ConfigFields.GET_STARTED)}
+              deleteHandler={event => this.deleteConfigField(event, ConfigFields.GET_STARTED)}
+              loadHandler={event => this.loadConfigField(event, ConfigFields.GET_STARTED)}
+              tokenIsValidated={!!this.props.main.accessTokenIsValid}
             />
             <GetStartedContainer/>
           </div>
           ||
           this.props.location.pathname === '/main/persistent-menu' &&
           <div>
-            <PersistentMenuRequestButtons disabled={!this.props.main.accessTokenIsValid}
-                                          loadCurrentPersistentMenu={this.loadCurrentPersistentMenu.bind(this)}
-                                          sendPersistentMenuRequest={this.sendPersistentMenuRequest.bind(this)}
-                                          deleteExistingPersistentMenu={this.deleteExistingPersistentMenu.bind(this)}
+            <MBCRequestButtonsMenu
+              fieldName="Persistent menu"
+              updateHandler={event => this.updateConfigField(event, ConfigFields.PERSISTENT_MENU)}
+              deleteHandler={event => this.deleteConfigField(event, ConfigFields.PERSISTENT_MENU)}
+              loadHandler={event => this.loadConfigField(event, ConfigFields.PERSISTENT_MENU)}
+              tokenIsValidated={!!this.props.main.accessTokenIsValid}
             />
             <PersistentMenuContainer/>
           </div>
           ||
           this.props.location.pathname === '/main/whitelisted-domains' &&
           <div>
-            <WhitelistedDomainsRequestButtons disabled={!this.props.main.accessTokenIsValid}
-                                              loadCurrentWhitelistedDomains={this.loadCurrentWhitelistedDomains.bind(this)}
-                                              sendWhitelistedDomainsRequest={this.sendWhitelistedDomainsRequest.bind(this)}
-                                              deleteExistingWhitelistedDomains={this.deleteExistingWhitelistedDomains.bind(this)}
+            <MBCRequestButtonsMenu
+              fieldName="Whitelisted domains"
+              updateHandler={event => this.updateConfigField(event, ConfigFields.WHITELISTED_DOMAINS)}
+              deleteHandler={event => this.deleteConfigField(event, ConfigFields.WHITELISTED_DOMAINS)}
+              loadHandler={event => this.loadConfigField(event, ConfigFields.WHITELISTED_DOMAINS)}
+              tokenIsValidated={!!this.props.main.accessTokenIsValid}
             />
             <WhitelistedDomainsContainer/>
           </div>
