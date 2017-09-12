@@ -12,5 +12,5 @@ module.exports = {
   title: 'Messenger bot config tool',        // Your website title
   url: 'https://messenger-bot-config-tool.firebaseapp.com',          // Your website URL
   project: 'messenger-bot-config-tool',      // Firebase project. See README.md -> How to Deploy
-  trackingID: 'UA-XXXXX-Y',                 // Google Analytics Site's ID
+  trackingID: 'UA-106312758-1',                 // Google Analytics Site's ID
 };
